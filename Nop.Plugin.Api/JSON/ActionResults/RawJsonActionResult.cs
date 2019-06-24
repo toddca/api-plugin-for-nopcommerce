@@ -1,19 +1,24 @@
-﻿using System.Threading.Tasks;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="RawJsonActionResult.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Nop.Plugin.Api.JSON.ActionResults
 {
-    using System;
-    using System.IO;
-    using System.Text;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.WebUtilities;
-
     // TODO: Move to BaseApiController as method.
     public class RawJsonActionResult : IActionResult
     {
         private readonly string _jsonString;
-        
+
         public RawJsonActionResult(object value)
         {
             if (value != null)
@@ -25,10 +30,12 @@ namespace Nop.Plugin.Api.JSON.ActionResults
         public Task ExecuteResultAsync(ActionContext context)
         {
             if (context == null)
+            {
                 throw new ArgumentNullException(nameof(context));
+            }
 
-            HttpResponse response = context.HttpContext.Response;
-            
+            var response = context.HttpContext.Response;
+
             response.StatusCode = 200;
             response.ContentType = "application/json";
 

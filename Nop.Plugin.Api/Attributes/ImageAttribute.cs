@@ -1,21 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using Nop.Plugin.Api.DTOs.Images;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ImageAttribute.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using Nop.Core.Infrastructure;
+using Nop.Plugin.Api.DTO.Images;
 using Nop.Services.Media;
 
 namespace Nop.Plugin.Api.Attributes
 {
     public class ImageValidationAttribute : BaseValidationAttribute
     {
-        private Dictionary<string, string> _errors;
         private readonly IPictureService _pictureService;
+        private readonly Dictionary<string, string> _errors;
 
         public ImageValidationAttribute()
         {
@@ -25,15 +32,15 @@ namespace Nop.Plugin.Api.Attributes
 
         public override void Validate(object instance)
         {
-            ImageDto imageDto = instance as ImageDto;
+            var imageDto = instance as ImageDto;
 
-            bool imageSrcSet = imageDto != null && !string.IsNullOrEmpty(imageDto.Src);
-            bool imageAttachmentSet = imageDto != null && !string.IsNullOrEmpty(imageDto.Attachment);
-            
+            var imageSrcSet = imageDto != null && !string.IsNullOrEmpty(imageDto.Src);
+            var imageAttachmentSet = imageDto != null && !string.IsNullOrEmpty(imageDto.Attachment);
+
             if (imageSrcSet || imageAttachmentSet)
             {
                 byte[] imageBytes = null;
-                string mimeType = string.Empty;
+                var mimeType = string.Empty;
 
                 // Validation of the image object
 
@@ -56,7 +63,7 @@ namespace Nop.Plugin.Api.Attributes
                         if (_errors.Count == 0)
                         {
                             ConvertAttachmentToByteArray(imageDto.Attachment, ref imageBytes,
-                                ref mimeType);
+                                                         ref mimeType);
                         }
                     }
                 }
@@ -84,14 +91,14 @@ namespace Nop.Plugin.Api.Attributes
             if (imageSrcSet &&
                 imageAttachmentSet)
             {
-                var key = string.Format("{0} type", "image");
-                _errors.Add(key, "Image src and Attachment are both set");
+                const string Key = "image type";
+                _errors.Add(Key, "Image src and Attachment are both set");
             }
         }
 
         private void DownloadFromSrc(string imageSrc, ref byte[] imageBytes, ref string mimeType)
         {
-            var key = string.Format("{0} type", "image");
+            const string Key = "image type";
             // TODO: discuss if we need our own web client so we can set a custom tmeout - this one's timeout is 100 sec.
             var client = new WebClient();
 
@@ -103,30 +110,30 @@ namespace Nop.Plugin.Api.Attributes
 
                 if (imageBytes == null)
                 {
-                    _errors.Add(key, "src is invalid");
+                    _errors.Add(Key, "src is invalid");
                 }
             }
             catch (Exception ex)
             {
-                string message = string.Format("{0} - {1}", "src is invalid", ex.Message);
+                var message = $"{"src is invalid"} - {ex.Message}";
 
-                _errors.Add(key, message);
+                _errors.Add(Key, message);
             }
         }
 
         private void ValidateAttachmentFormat(string attachment)
         {
-            Regex validBase64Pattern =
+            var validBase64Pattern =
                 new Regex("^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$");
-            bool isMatch = validBase64Pattern.IsMatch(attachment);
+            var isMatch = validBase64Pattern.IsMatch(attachment);
             if (!isMatch)
             {
-                var key = string.Format("{0} type", "image");
-                _errors.Add(key, "attachment format is invalid");
+                const string Key = "image type";
+                _errors.Add(Key, "attachment format is invalid");
             }
         }
 
-        private void ConvertAttachmentToByteArray(string attachment, ref byte[] imageBytes, ref string mimeType)
+        private static void ConvertAttachmentToByteArray(string attachment, ref byte[] imageBytes, ref string mimeType)
         {
             imageBytes = Convert.FromBase64String(attachment);
             mimeType = GetMimeTypeFromByteArray(imageBytes);
@@ -134,10 +141,10 @@ namespace Nop.Plugin.Api.Attributes
 
         private static string GetMimeTypeFromByteArray(byte[] imageBytes)
         {
-            MemoryStream stream = new MemoryStream(imageBytes, 0, imageBytes.Length);
-            Image image = Image.FromStream(stream, true);
-            ImageFormat format = image.RawFormat;
-            ImageCodecInfo codec = ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == format.Guid);
+            var stream = new MemoryStream(imageBytes, 0, imageBytes.Length);
+            var image = Image.FromStream(stream, true);
+            var format = image.RawFormat;
+            var codec = ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == format.Guid);
             return codec.MimeType;
         }
 
@@ -151,8 +158,8 @@ namespace Nop.Plugin.Api.Attributes
                 }
                 catch (Exception ex)
                 {
-                    var key = string.Format("{0} invalid", "image");
-                    string message = string.Format("{0} - {1}", "source is invalid", ex.Message);
+                    var key = "image invalid";
+                    var message = $"source is invalid - {ex.Message}";
 
                     _errors.Add(key, message);
                 }
@@ -160,8 +167,8 @@ namespace Nop.Plugin.Api.Attributes
 
             if (imageBytes == null)
             {
-                var key = string.Format("{0} invalid", "image");
-                string message = "You have provided an invalid image source/attachment";
+                var key = "image invalid";
+                var message = "You have provided an invalid image source/attachment";
 
                 _errors.Add(key, message);
             }

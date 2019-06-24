@@ -1,11 +1,18 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ShoppingCartItemApiService.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Orders;
-using Nop.Plugin.Api.Constants;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.DataStructures;
-using Nop.Core;
 
 namespace Nop.Plugin.Api.Services
 {
@@ -20,12 +27,13 @@ namespace Nop.Plugin.Api.Services
             _storeContext = storeContext;
         }
 
-        public List<ShoppingCartItem> GetShoppingCartItems(int? customerId = null, DateTime? createdAtMin = null, DateTime? createdAtMax = null,
-                                                           DateTime? updatedAtMin = null, DateTime? updatedAtMax = null, int limit = Configurations.DefaultLimit,
-                                                           int page = Configurations.DefaultPageValue)
+        public List<ShoppingCartItem> GetShoppingCartItems(
+            int? customerId = null, DateTime? createdAtMin = null, DateTime? createdAtMax = null,
+            DateTime? updatedAtMin = null, DateTime? updatedAtMax = null, int limit = Constants.Configurations.DefaultLimit,
+            int page = Constants.Configurations.DefaultPageValue)
         {
-            IQueryable<ShoppingCartItem> query = GetShoppingCartItemsQuery(customerId, createdAtMin, createdAtMax,
-                                                                           updatedAtMin, updatedAtMax);
+            var query = GetShoppingCartItemsQuery(customerId, createdAtMin, createdAtMax,
+                                                  updatedAtMin, updatedAtMax);
 
             return new ApiList<ShoppingCartItem>(query, page - 1, limit);
         }
@@ -35,10 +43,11 @@ namespace Nop.Plugin.Api.Services
             return _shoppingCartItemsRepository.GetById(id);
         }
 
-        private IQueryable<ShoppingCartItem> GetShoppingCartItemsQuery(int? customerId = null, DateTime? createdAtMin = null, DateTime? createdAtMax = null,
-                                                                       DateTime? updatedAtMin = null, DateTime? updatedAtMax = null)
+        private IQueryable<ShoppingCartItem> GetShoppingCartItemsQuery(
+            int? customerId = null, DateTime? createdAtMin = null, DateTime? createdAtMax = null,
+            DateTime? updatedAtMin = null, DateTime? updatedAtMax = null)
         {
-            var query = _shoppingCartItemsRepository.TableNoTracking;
+            var query = _shoppingCartItemsRepository.Table;
 
             if (customerId != null)
             {
@@ -66,7 +75,7 @@ namespace Nop.Plugin.Api.Services
             }
 
             // items for the current store only
-            int currentStoreId = _storeContext.CurrentStore.Id;
+            var currentStoreId = _storeContext.CurrentStore.Id;
             query = query.Where(c => c.StoreId == currentStoreId);
 
             query = query.OrderBy(shoppingCartItem => shoppingCartItem.Id);

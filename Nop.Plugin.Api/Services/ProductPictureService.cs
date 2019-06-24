@@ -1,4 +1,11 @@
-﻿using System.Linq;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ProductPictureService.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System.Linq;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 
@@ -16,11 +23,13 @@ namespace Nop.Plugin.Api.Services
         public ProductPicture GetProductPictureByPictureId(int pictureId)
         {
             if (pictureId == 0)
+            {
                 return null;
+            }
 
             var query = from pp in _productPictureRepository.Table
-                where pp.PictureId == pictureId
-                select pp;
+                        where pp.PictureId == pictureId
+                        select pp;
 
             var productPictures = query.ToList();
 

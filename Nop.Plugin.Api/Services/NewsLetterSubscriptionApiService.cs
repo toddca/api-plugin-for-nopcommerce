@@ -1,10 +1,17 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="NewsLetterSubscriptionApiService.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Messages;
-using Nop.Plugin.Api.Constants;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.DataStructures;
 
 namespace Nop.Plugin.Api.Services
@@ -20,8 +27,9 @@ namespace Nop.Plugin.Api.Services
             _storeContext = storeContext;
         }
 
-        public List<NewsLetterSubscription> GetNewsLetterSubscriptions(DateTime? createdAtMin = null, DateTime? createdAtMax = null,
-            int limit = Configurations.DefaultLimit, int page = Configurations.DefaultPageValue, int sinceId = Configurations.DefaultSinceId,
+        public List<NewsLetterSubscription> GetNewsLetterSubscriptions(
+            DateTime? createdAtMin = null, DateTime? createdAtMax = null,
+            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue, int sinceId = Constants.Configurations.DefaultSinceId,
             bool? onlyActive = true)
         {
             var query = GetNewsLetterSubscriptionsQuery(createdAtMin, createdAtMax, onlyActive);
@@ -34,15 +42,16 @@ namespace Nop.Plugin.Api.Services
             return new ApiList<NewsLetterSubscription>(query, page - 1, limit);
         }
 
-        private IQueryable<NewsLetterSubscription> GetNewsLetterSubscriptionsQuery(DateTime? createdAtMin = null, DateTime? createdAtMax = null, bool? onlyActive = true)
+        private IQueryable<NewsLetterSubscription> GetNewsLetterSubscriptionsQuery(
+            DateTime? createdAtMin = null, DateTime? createdAtMax = null, bool? onlyActive = true)
         {
-            var query = _newsLetterSubscriptionRepository.TableNoTracking.Where(nls => nls.StoreId == _storeContext.CurrentStore.Id);
+            var query = _newsLetterSubscriptionRepository.Table.Where(nls => nls.StoreId == _storeContext.CurrentStore.Id);
 
             if (onlyActive != null && onlyActive == true)
             {
                 query = query.Where(nls => nls.Active == onlyActive);
             }
-            
+
             if (createdAtMin != null)
             {
                 query = query.Where(c => c.CreatedOnUtc > createdAtMin.Value);
@@ -50,7 +59,6 @@ namespace Nop.Plugin.Api.Services
 
             if (createdAtMax != null)
             {
-
                 query = query.Where(c => c.CreatedOnUtc < createdAtMax.Value);
             }
 

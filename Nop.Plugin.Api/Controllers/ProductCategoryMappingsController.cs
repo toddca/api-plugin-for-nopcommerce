@@ -1,12 +1,23 @@
-﻿using System.Collections.Generic;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ProductCategoryMappingsController.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Api.Attributes;
-using Nop.Plugin.Api.Constants;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.Delta;
-using Nop.Plugin.Api.DTOs.ProductCategoryMappings;
+using Nop.Plugin.Api.DTO.Errors;
+using Nop.Plugin.Api.DTO.ProductCategoryMappings;
 using Nop.Plugin.Api.JSON.ActionResults;
+using Nop.Plugin.Api.JSON.Serializers;
 using Nop.Plugin.Api.MappingExtensions;
 using Nop.Plugin.Api.ModelBinders;
 using Nop.Plugin.Api.Models.ProductCategoryMappingsParameters;
@@ -22,20 +33,15 @@ using Nop.Services.Stores;
 
 namespace Nop.Plugin.Api.Controllers
 {
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Mvc;
-    using Nop.Plugin.Api.DTOs.Errors;
-    using Nop.Plugin.Api.JSON.Serializers;
-
-    [ApiAuthorize(Policy = JwtBearerDefaults.AuthenticationScheme, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ProductCategoryMappingsController : BaseApiController
     {
-        private readonly IProductCategoryMappingsApiService _productCategoryMappingsService;
-        private readonly ICategoryService _categoryService;
         private readonly ICategoryApiService _categoryApiService;
+        private readonly ICategoryService _categoryService;
         private readonly IProductApiService _productApiService;
+        private readonly IProductCategoryMappingsApiService _productCategoryMappingsService;
 
-        public ProductCategoryMappingsController(IProductCategoryMappingsApiService productCategoryMappingsService,
+        public ProductCategoryMappingsController(
+            IProductCategoryMappingsApiService productCategoryMappingsService,
             ICategoryService categoryService,
             IJsonFieldsSerializer jsonFieldsSerializer,
             IAclService aclService,
@@ -44,11 +50,12 @@ namespace Nop.Plugin.Api.Controllers
             IStoreService storeService,
             IDiscountService discountService,
             ICustomerActivityService customerActivityService,
-            ILocalizationService localizationService, 
-            ICategoryApiService categoryApiService, 
+            ILocalizationService localizationService,
+            ICategoryApiService categoryApiService,
             IProductApiService productApiService,
             IPictureService pictureService)
-            : base(jsonFieldsSerializer, aclService, customerService, storeMappingService, storeService, discountService, customerActivityService, localizationService,pictureService)
+            : base(jsonFieldsSerializer, aclService, customerService, storeMappingService, storeService, discountService, customerActivityService,
+                   localizationService, pictureService)
         {
             _productCategoryMappingsService = productCategoryMappingsService;
             _categoryService = categoryService;
@@ -57,56 +64,56 @@ namespace Nop.Plugin.Api.Controllers
         }
 
         /// <summary>
-        /// Receive a list of all Product-Category mappings
+        ///     Receive a list of all Product-Category mappings
         /// </summary>
         /// <response code="200">OK</response>
         /// <response code="400">Bad Request</response>
         /// <response code="401">Unauthorized</response>
         [HttpGet]
         [Route("/api/product_category_mappings")]
-        [ProducesResponseType(typeof(ProductCategoryMappingsRootObject), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProductCategoryMappingsRootObject), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int) HttpStatusCode.BadRequest)]
         [GetRequestsErrorInterceptorActionFilter]
         public IActionResult GetMappings(ProductCategoryMappingsParametersModel parameters)
         {
-            if (parameters.Limit < Configurations.MinLimit || parameters.Limit > Configurations.MaxLimit)
+            if (parameters.Limit < Constants.Configurations.MinLimit || parameters.Limit > Constants.Configurations.MaxLimit)
             {
                 return Error(HttpStatusCode.BadRequest, "limit", "invalid limit parameter");
             }
 
-            if (parameters.Page < Configurations.DefaultPageValue)
+            if (parameters.Page < Constants.Configurations.DefaultPageValue)
             {
                 return Error(HttpStatusCode.BadRequest, "page", "invalid page parameter");
             }
 
             IList<ProductCategoryMappingDto> mappingsAsDtos =
                 _productCategoryMappingsService.GetMappings(parameters.ProductId,
-                    parameters.CategoryId,
-                    parameters.Limit,
-                    parameters.Page,
-                    parameters.SinceId).Select(x => x.ToDto()).ToList();
+                                                            parameters.CategoryId,
+                                                            parameters.Limit,
+                                                            parameters.Page,
+                                                            parameters.SinceId).Select(x => x.ToDto()).ToList();
 
-            var productCategoryMappingRootObject = new ProductCategoryMappingsRootObject()
-            {
-                ProductCategoryMappingDtos = mappingsAsDtos
-            };
+            var productCategoryMappingRootObject = new ProductCategoryMappingsRootObject
+                                                   {
+                                                       ProductCategoryMappingDtos = mappingsAsDtos
+                                                   };
 
-            var json = _jsonFieldsSerializer.Serialize(productCategoryMappingRootObject, parameters.Fields);
+            var json = JsonFieldsSerializer.Serialize(productCategoryMappingRootObject, parameters.Fields);
 
             return new RawJsonActionResult(json);
         }
 
         /// <summary>
-        /// Receive a count of all Product-Category mappings
+        ///     Receive a count of all Product-Category mappings
         /// </summary>
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         [HttpGet]
         [Route("/api/product_category_mappings/count")]
-        [ProducesResponseType(typeof(ProductCategoryMappingsCountRootObject), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProductCategoryMappingsCountRootObject), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int) HttpStatusCode.BadRequest)]
         [GetRequestsErrorInterceptorActionFilter]
         public IActionResult GetMappingsCount(ProductCategoryMappingsCountParametersModel parameters)
         {
@@ -121,30 +128,31 @@ namespace Nop.Plugin.Api.Controllers
             }
 
             var mappingsCount = _productCategoryMappingsService.GetMappingsCount(parameters.ProductId,
-                parameters.CategoryId);
+                                                                                 parameters.CategoryId);
 
-            var productCategoryMappingsCountRootObject = new ProductCategoryMappingsCountRootObject()
-            {
-                Count = mappingsCount
-            };
+            var productCategoryMappingsCountRootObject = new ProductCategoryMappingsCountRootObject
+                                                         {
+                                                             Count = mappingsCount
+                                                         };
 
             return Ok(productCategoryMappingsCountRootObject);
         }
 
         /// <summary>
-        /// Retrieve Product-Category mappings by spcified id
+        ///     Retrieve Product-Category mappings by spcified id
         /// </summary>
-        ///   /// <param name="id">Id of the Product-Category mapping</param>
+        /// ///
+        /// <param name="id">Id of the Product-Category mapping</param>
         /// <param name="fields">Fields from the Product-Category mapping you want your json to contain</param>
         /// <response code="200">OK</response>
         /// <response code="404">Not Found</response>
         /// <response code="401">Unauthorized</response>
         [HttpGet]
         [Route("/api/product_category_mappings/{id}")]
-        [ProducesResponseType(typeof(ProductCategoryMappingsRootObject), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ProductCategoryMappingsRootObject), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int) HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.NotFound)]
         [GetRequestsErrorInterceptorActionFilter]
         public IActionResult GetMappingById(int id, string fields = "")
         {
@@ -153,7 +161,7 @@ namespace Nop.Plugin.Api.Controllers
                 return Error(HttpStatusCode.BadRequest, "id", "invalid id");
             }
 
-            ProductCategory mapping = _productCategoryMappingsService.GetById(id);
+            var mapping = _productCategoryMappingsService.GetById(id);
 
             if (mapping == null)
             {
@@ -163,19 +171,21 @@ namespace Nop.Plugin.Api.Controllers
             var productCategoryMappingsRootObject = new ProductCategoryMappingsRootObject();
             productCategoryMappingsRootObject.ProductCategoryMappingDtos.Add(mapping.ToDto());
 
-            var json = _jsonFieldsSerializer.Serialize(productCategoryMappingsRootObject, fields);
+            var json = JsonFieldsSerializer.Serialize(productCategoryMappingsRootObject, fields);
 
             return new RawJsonActionResult(json);
         }
 
         [HttpPost]
         [Route("/api/product_category_mappings")]
-        [ProducesResponseType(typeof(ProductCategoryMappingsRootObject), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ProductCategoryMappingsRootObject), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int) HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorsRootObject), 422)]
-        public IActionResult CreateProductCategoryMapping([ModelBinder(typeof(JsonModelBinder<ProductCategoryMappingDto>))] Delta<ProductCategoryMappingDto> productCategoryDelta)
+        public IActionResult CreateProductCategoryMapping(
+            [ModelBinder(typeof(JsonModelBinder<ProductCategoryMappingDto>))]
+            Delta<ProductCategoryMappingDto> productCategoryDelta)
         {
             // Here we display the errors if the validation has failed at some point.
             if (!ModelState.IsValid)
@@ -183,54 +193,57 @@ namespace Nop.Plugin.Api.Controllers
                 return Error();
             }
 
-            Category category = _categoryApiService.GetCategoryById(productCategoryDelta.Dto.CategoryId.Value);
+            var category = _categoryApiService.GetCategoryById(productCategoryDelta.Dto.CategoryId.Value);
             if (category == null)
             {
                 return Error(HttpStatusCode.NotFound, "category_id", "not found");
             }
 
-            Product product = _productApiService.GetProductById(productCategoryDelta.Dto.ProductId.Value);
+            var product = _productApiService.GetProductById(productCategoryDelta.Dto.ProductId.Value);
             if (product == null)
             {
                 return Error(HttpStatusCode.NotFound, "product_id", "not found");
             }
 
-            int mappingsCount = _productCategoryMappingsService.GetMappingsCount(product.Id, category.Id);
+            var mappingsCount = _productCategoryMappingsService.GetMappingsCount(product.Id, category.Id);
 
             if (mappingsCount > 0)
             {
                 return Error(HttpStatusCode.BadRequest, "product_category_mapping", "already exist");
             }
 
-            ProductCategory newProductCategory = new ProductCategory();
+            var newProductCategory = new ProductCategory();
             productCategoryDelta.Merge(newProductCategory);
 
             //inserting new category
             _categoryService.InsertProductCategory(newProductCategory);
 
             // Preparing the result dto of the new product category mapping
-            ProductCategoryMappingDto newProductCategoryMappingDto = newProductCategory.ToDto();
+            var newProductCategoryMappingDto = newProductCategory.ToDto();
 
             var productCategoryMappingsRootObject = new ProductCategoryMappingsRootObject();
 
             productCategoryMappingsRootObject.ProductCategoryMappingDtos.Add(newProductCategoryMappingDto);
 
-            var json = _jsonFieldsSerializer.Serialize(productCategoryMappingsRootObject, string.Empty);
+            var json = JsonFieldsSerializer.Serialize(productCategoryMappingsRootObject, string.Empty);
 
             //activity log 
-            _customerActivityService.InsertActivity("AddNewProductCategoryMapping", _localizationService.GetResource("ActivityLog.AddNewProductCategoryMapping"), newProductCategory.Id);
+            CustomerActivityService.InsertActivity("AddNewProductCategoryMapping", LocalizationService.GetResource("ActivityLog.AddNewProductCategoryMapping"),
+                                                   newProductCategory);
 
             return new RawJsonActionResult(json);
         }
 
         [HttpPut]
         [Route("/api/product_category_mappings/{id}")]
-        [ProducesResponseType(typeof(ProductCategoryMappingsRootObject), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ProductCategoryMappingsRootObject), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(ErrorsRootObject), 422)]
-        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        public IActionResult UpdateProductCategoryMapping([ModelBinder(typeof(JsonModelBinder<ProductCategoryMappingDto>))] Delta<ProductCategoryMappingDto> productCategoryDelta)
+        [ProducesResponseType(typeof(ErrorsRootObject), (int) HttpStatusCode.BadRequest)]
+        public IActionResult UpdateProductCategoryMapping(
+            [ModelBinder(typeof(JsonModelBinder<ProductCategoryMappingDto>))]
+            Delta<ProductCategoryMappingDto> productCategoryDelta)
         {
             // Here we display the errors if the validation has failed at some point.
             if (!ModelState.IsValid)
@@ -240,7 +253,7 @@ namespace Nop.Plugin.Api.Controllers
 
             if (productCategoryDelta.Dto.CategoryId.HasValue)
             {
-                Category category = _categoryApiService.GetCategoryById(productCategoryDelta.Dto.CategoryId.Value);
+                var category = _categoryApiService.GetCategoryById(productCategoryDelta.Dto.CategoryId.Value);
                 if (category == null)
                 {
                     return Error(HttpStatusCode.NotFound, "category_id", "not found");
@@ -249,7 +262,7 @@ namespace Nop.Plugin.Api.Controllers
 
             if (productCategoryDelta.Dto.ProductId.HasValue)
             {
-                Product product = _productApiService.GetProductById(productCategoryDelta.Dto.ProductId.Value);
+                var product = _productApiService.GetProductById(productCategoryDelta.Dto.ProductId.Value);
                 if (product == null)
                 {
                     return Error(HttpStatusCode.NotFound, "product_id", "not found");
@@ -257,9 +270,9 @@ namespace Nop.Plugin.Api.Controllers
             }
 
             // We do not need to validate the category id, because this will happen in the model binder using the dto validator.
-            int updateProductCategoryId = productCategoryDelta.Dto.Id;
+            var updateProductCategoryId = productCategoryDelta.Dto.Id;
 
-            ProductCategory productCategoryEntityToUpdate = _categoryService.GetProductCategoryById(updateProductCategoryId);
+            var productCategoryEntityToUpdate = _categoryService.GetProductCategoryById(updateProductCategoryId);
 
             if (productCategoryEntityToUpdate == null)
             {
@@ -271,26 +284,26 @@ namespace Nop.Plugin.Api.Controllers
             _categoryService.UpdateProductCategory(productCategoryEntityToUpdate);
 
             //activity log
-            _customerActivityService.InsertActivity("UpdateProdutCategoryMapping",
-                _localizationService.GetResource("ActivityLog.UpdateProdutCategoryMapping"), productCategoryEntityToUpdate.Id);
+            CustomerActivityService.InsertActivity("UpdateProdutCategoryMapping",
+                                                   LocalizationService.GetResource("ActivityLog.UpdateProdutCategoryMapping"), productCategoryEntityToUpdate);
 
-            ProductCategoryMappingDto updatedProductCategoryDto = productCategoryEntityToUpdate.ToDto();
+            var updatedProductCategoryDto = productCategoryEntityToUpdate.ToDto();
 
             var productCategoriesRootObject = new ProductCategoryMappingsRootObject();
 
             productCategoriesRootObject.ProductCategoryMappingDtos.Add(updatedProductCategoryDto);
 
-            var json = _jsonFieldsSerializer.Serialize(productCategoriesRootObject, string.Empty);
+            var json = JsonFieldsSerializer.Serialize(productCategoriesRootObject, string.Empty);
 
             return new RawJsonActionResult(json);
         }
 
         [HttpDelete]
         [Route("/api/product_category_mappings/{id}")]
-        [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(void), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int) HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.NotFound)]
         [GetRequestsErrorInterceptorActionFilter]
         public IActionResult DeleteProductCategoryMapping(int id)
         {
@@ -299,7 +312,7 @@ namespace Nop.Plugin.Api.Controllers
                 return Error(HttpStatusCode.BadRequest, "id", "invalid id");
             }
 
-            ProductCategory productCategory = _categoryService.GetProductCategoryById(id);
+            var productCategory = _categoryService.GetProductCategoryById(id);
 
             if (productCategory == null)
             {
@@ -309,7 +322,8 @@ namespace Nop.Plugin.Api.Controllers
             _categoryService.DeleteProductCategory(productCategory);
 
             //activity log 
-            _customerActivityService.InsertActivity("DeleteProductCategoryMapping", _localizationService.GetResource("ActivityLog.DeleteProductCategoryMapping"), productCategory.Id);
+            CustomerActivityService.InsertActivity("DeleteProductCategoryMapping", LocalizationService.GetResource("ActivityLog.DeleteProductCategoryMapping"),
+                                                   productCategory);
 
             return new RawJsonActionResult("{}");
         }

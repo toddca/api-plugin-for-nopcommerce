@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ParametersModelBinder.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Nop.Plugin.Api.Converters;
 
 namespace Nop.Plugin.Api.ModelBinders
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc.ModelBinding;
-    
     public class ParametersModelBinder<T> : IModelBinder where T : class, new()
     {
         private readonly IObjectConverter _objectConverter;
@@ -16,17 +21,17 @@ namespace Nop.Plugin.Api.ModelBinders
         {
             _objectConverter = objectConverter;
         }
-        
+
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (bindingContext == null)
             {
                 throw new ArgumentNullException(nameof(bindingContext));
             }
-            
+
             if (bindingContext.HttpContext.Request.QueryString.HasValue)
             {
-                Dictionary<string, string> queryParameters = bindingContext.HttpContext.Request.Query.ToDictionary(pair => pair.Key, pair => pair.Value.ToString());
+                var queryParameters = bindingContext.HttpContext.Request.Query.ToDictionary(pair => pair.Key, pair => pair.Value.ToString());
 
                 bindingContext.Model = _objectConverter.ToObject<T>(queryParameters);
             }

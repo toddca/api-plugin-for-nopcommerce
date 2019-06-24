@@ -1,6 +1,13 @@
-﻿using Nop.Core.Domain.Catalog;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ProductAttributeDtoMappings.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Api.AutoMapper;
-using Nop.Plugin.Api.DTOs.ProductAttributes;
+using Nop.Plugin.Api.DTO.ProductAttributes;
 
 namespace Nop.Plugin.Api.MappingExtensions
 {

@@ -1,10 +1,21 @@
-﻿using System.Collections.Generic;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="LanguagesController.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Linq;
-using Nop.Core.Domain.Localization;
+using System.Net;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Plugin.Api.Attributes;
-using Nop.Plugin.Api.DTOs.Languages;
+using Nop.Plugin.Api.DTO.Errors;
+using Nop.Plugin.Api.DTO.Languages;
 using Nop.Plugin.Api.Helpers;
 using Nop.Plugin.Api.JSON.ActionResults;
+using Nop.Plugin.Api.JSON.Serializers;
 using Nop.Services.Customers;
 using Nop.Services.Discounts;
 using Nop.Services.Localization;
@@ -15,19 +26,13 @@ using Nop.Services.Stores;
 
 namespace Nop.Plugin.Api.Controllers
 {
-    using System.Net;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Mvc;
-    using Nop.Plugin.Api.DTOs.Errors;
-    using Nop.Plugin.Api.JSON.Serializers;
-
-    [ApiAuthorize(Policy = JwtBearerDefaults.AuthenticationScheme, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class LanguagesController : BaseApiController
     {
-        private ILanguageService _languageService;
         private readonly IDTOHelper _dtoHelper;
+        private readonly ILanguageService _languageService;
 
-        public LanguagesController(IJsonFieldsSerializer jsonFieldsSerializer,
+        public LanguagesController(
+            IJsonFieldsSerializer jsonFieldsSerializer,
             IAclService aclService,
             ICustomerService customerService,
             IStoreMappingService storeMappingService,
@@ -39,43 +44,43 @@ namespace Nop.Plugin.Api.Controllers
             ILanguageService languageService,
             IDTOHelper dtoHelper)
             : base(jsonFieldsSerializer,
-                  aclService,
-                  customerService,
-                  storeMappingService,
-                  storeService,
-                  discountService,
-                  customerActivityService,
-                  localizationService,
-                  pictureService)
+                   aclService,
+                   customerService,
+                   storeMappingService,
+                   storeService,
+                   discountService,
+                   customerActivityService,
+                   localizationService,
+                   pictureService)
         {
             _languageService = languageService;
             _dtoHelper = dtoHelper;
         }
 
         /// <summary>
-        /// Retrieve all languages
+        ///     Retrieve all languages
         /// </summary>
         /// <param name="fields">Fields from the language you want your json to contain</param>
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         [HttpGet]
         [Route("/api/languages")]
-        [ProducesResponseType(typeof(LanguagesRootObject), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(LanguagesRootObject), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int) HttpStatusCode.BadRequest)]
         [GetRequestsErrorInterceptorActionFilter]
         public IActionResult GetAllLanguages(string fields = "")
         {
-            IList<Language> allLanguages = _languageService.GetAllLanguages();
+            var allLanguages = _languageService.GetAllLanguages();
 
-            IList<LanguageDto> languagesAsDto = allLanguages.Select(language => _dtoHelper.PrepateLanguageDto(language)).ToList();
+            IList<LanguageDto> languagesAsDto = allLanguages.Select(language => _dtoHelper.PrepareLanguageDto(language)).ToList();
 
-            var languagesRootObject = new LanguagesRootObject()
-            {
-                Languages = languagesAsDto
-            };
+            var languagesRootObject = new LanguagesRootObject
+                                      {
+                                          Languages = languagesAsDto
+                                      };
 
-            var json = _jsonFieldsSerializer.Serialize(languagesRootObject, fields);
+            var json = JsonFieldsSerializer.Serialize(languagesRootObject, fields);
 
             return new RawJsonActionResult(json);
         }

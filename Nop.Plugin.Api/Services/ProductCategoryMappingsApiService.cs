@@ -1,8 +1,15 @@
-﻿using System.Collections.Generic;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ProductCategoryMappingsApiService.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
-using Nop.Plugin.Api.Constants;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.DataStructures;
 
 namespace Nop.Plugin.Api.Services
@@ -16,9 +23,10 @@ namespace Nop.Plugin.Api.Services
             _productCategoryMappingsRepository = productCategoryMappingsRepository;
         }
 
-        public IList<ProductCategory> GetMappings(int? productId = null, 
-            int? categoryId = null, int limit = Configurations.DefaultLimit, 
-            int page = Configurations.DefaultPageValue, int sinceId = Configurations.DefaultSinceId)
+        public IList<ProductCategory> GetMappings(
+            int? productId = null,
+            int? categoryId = null, int limit = Constants.Configurations.DefaultLimit,
+            int page = Constants.Configurations.DefaultPageValue, int sinceId = Constants.Configurations.DefaultSinceId)
         {
             var query = GetMappingsQuery(productId, categoryId, sinceId);
 
@@ -33,15 +41,18 @@ namespace Nop.Plugin.Api.Services
         public ProductCategory GetById(int id)
         {
             if (id <= 0)
+            {
                 return null;
+            }
 
             return _productCategoryMappingsRepository.GetById(id);
         }
 
-        private IQueryable<ProductCategory> GetMappingsQuery(int? productId = null, 
-            int? categoryId = null, int sinceId = Configurations.DefaultSinceId)
+        private IQueryable<ProductCategory> GetMappingsQuery(
+            int? productId = null,
+            int? categoryId = null, int sinceId = Constants.Configurations.DefaultSinceId)
         {
-            var query = _productCategoryMappingsRepository.TableNoTracking;
+            var query = _productCategoryMappingsRepository.Table;
 
             if (productId != null)
             {

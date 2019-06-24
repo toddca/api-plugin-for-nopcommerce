@@ -1,8 +1,15 @@
-﻿namespace Nop.Plugin.Api.Helpers
-{
-    using System.Collections.Generic;
-    using Newtonsoft.Json.Linq;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="JTokenHelper.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+
+namespace Nop.Plugin.Api.Helpers
+{
     public static class JTokenHelper
     {
         public static JToken RemoveEmptyChildrenAndFilterByFields(this JToken token, IList<string> jsonFields, int level = 1)
@@ -11,9 +18,9 @@
             {
                 var copy = new JObject();
 
-                foreach (JProperty prop in token.Children<JProperty>())
+                foreach (var prop in token.Children<JProperty>())
                 {
-                    JToken child = prop.Value;
+                    var child = prop.Value;
 
                     if (child.HasValues)
                     {
@@ -23,11 +30,11 @@
                     // In the current json structure, the first level of properties is level 3. 
                     // If the level is > 3 ( meaning we are not on the first level of properties ), we should not check if the current field is containing into the list with fields, 
                     // so we need to serialize it always.
-                    bool allowedFields = jsonFields.Contains(prop.Name.ToLowerInvariant()) || level > 3;
+                    var allowedFields = jsonFields.Contains(prop.Name.ToLowerInvariant()) || level > 3;
 
                     // If the level == 3 ( meaning we are on the first level of properties ), we should not take into account if the current field is values,
                     // so we need to serialize it always.
-                    bool notEmpty = !child.IsEmptyOrDefault() || level == 1 || level == 3;
+                    var notEmpty = !child.IsEmptyOrDefault() || level == 1 || level == 3;
 
                     if (notEmpty && allowedFields)
                     {
@@ -42,9 +49,9 @@
             {
                 var copy = new JArray();
 
-                foreach (JToken item in token.Children())
+                foreach (var item in token.Children())
                 {
-                    JToken child = item;
+                    var child = item;
 
                     if (child.HasValues)
                     {
@@ -65,7 +72,7 @@
 
         private static bool IsEmptyOrDefault(this JToken token)
         {
-            return (token.Type == JTokenType.Array && !token.HasValues) || (token.Type == JTokenType.Object && !token.HasValues);
+            return token.Type == JTokenType.Array && !token.HasValues || token.Type == JTokenType.Object && !token.HasValues;
         }
     }
 }

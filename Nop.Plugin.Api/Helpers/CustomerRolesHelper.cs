@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="CustomerRolesHelper.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Caching;
 using Nop.Core.Domain.Customers;
@@ -9,9 +16,9 @@ namespace Nop.Plugin.Api.Helpers
     public class CustomerRolesHelper : ICustomerRolesHelper
     {
         private const string CUSTOMERROLES_ALL_KEY = "Nop.customerrole.all-{0}";
+        private readonly ICacheManager _cacheManager;
 
         private readonly ICustomerService _customerService;
-        private readonly ICacheManager _cacheManager;
 
         public CustomerRolesHelper(ICustomerService customerService, ICacheManager cacheManager)
         {
@@ -21,9 +28,9 @@ namespace Nop.Plugin.Api.Helpers
 
         public IList<CustomerRole> GetValidCustomerRoles(List<int> roleIds)
         {
-            // This is needed because the caching messeup the entity framework context
-            // and when you try to send something TO the database it throws an exeption.
-            _cacheManager.RemoveByPattern(CUSTOMERROLES_ALL_KEY);
+            // This is needed because the caching messes up the entity framework context
+            // and when you try to send something TO the database it throws an exception.
+            _cacheManager.RemoveByPrefix(CUSTOMERROLES_ALL_KEY);
 
             var allCustomerRoles = _customerService.GetAllCustomerRoles(true);
             var newCustomerRoles = new List<CustomerRole>();
@@ -40,12 +47,12 @@ namespace Nop.Plugin.Api.Helpers
 
         public bool IsInGuestsRole(IList<CustomerRole> customerRoles)
         {
-            return customerRoles.FirstOrDefault(cr => cr.SystemName == SystemCustomerRoleNames.Guests) != null;
+            return customerRoles.FirstOrDefault(cr => cr.SystemName == NopCustomerDefaults.GuestsRoleName) != null;
         }
 
         public bool IsInRegisteredRole(IList<CustomerRole> customerRoles)
         {
-            return customerRoles.FirstOrDefault(cr => cr.SystemName == SystemCustomerRoleNames.Registered) != null;
+            return customerRoles.FirstOrDefault(cr => cr.SystemName == NopCustomerDefaults.RegisteredRoleName) != null;
         }
     }
 }

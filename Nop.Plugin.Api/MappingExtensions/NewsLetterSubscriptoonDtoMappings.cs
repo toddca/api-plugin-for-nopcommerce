@@ -1,6 +1,13 @@
-﻿using Nop.Core.Domain.Messages;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="NewsLetterSubscriptoonDtoMappings.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using Nop.Core.Domain.Messages;
 using Nop.Plugin.Api.AutoMapper;
-using Nop.Plugin.Api.DTOs.Categories;
+using Nop.Plugin.Api.DTO.NewsLetterSubscriptions;
 
 namespace Nop.Plugin.Api.MappingExtensions
 {

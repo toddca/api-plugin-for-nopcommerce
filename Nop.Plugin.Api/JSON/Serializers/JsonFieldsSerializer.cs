@@ -1,26 +1,33 @@
-﻿namespace Nop.Plugin.Api.JSON.Serializers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Newtonsoft.Json.Linq;
-    using Nop.Plugin.Api.DTOs;
-    using Nop.Plugin.Api.Helpers;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="JsonFieldsSerializer.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using Nop.Plugin.Api.DTO;
+using Nop.Plugin.Api.Helpers;
+
+namespace Nop.Plugin.Api.JSON.Serializers
+{
     public class JsonFieldsSerializer : IJsonFieldsSerializer
     {
         public string Serialize(ISerializableObject objectToSerialize, string jsonFields)
         {
             if (objectToSerialize == null)
             {
-                throw new ArgumentNullException("objectToSerialize");
+                throw new ArgumentNullException(nameof(objectToSerialize));
             }
 
             IList<string> fieldsList = null;
 
             if (!string.IsNullOrEmpty(jsonFields))
             {
-                string primaryPropertyName = objectToSerialize.GetPrimaryPropertyName();
+                var primaryPropertyName = objectToSerialize.GetPrimaryPropertyName();
 
                 fieldsList = GetPropertiesIntoList(jsonFields);
 
@@ -28,21 +35,21 @@
                 fieldsList.Add(primaryPropertyName);
             }
 
-            string json = Serialize(objectToSerialize, fieldsList);
+            var json = Serialize(objectToSerialize, fieldsList);
 
             return json;
         }
 
         private string Serialize(object objectToSerialize, IList<string> jsonFields = null)
         {
-            JToken jToken = JToken.FromObject(objectToSerialize);
+            var jToken = JToken.FromObject(objectToSerialize);
 
             if (jsonFields != null)
             {
                 jToken = jToken.RemoveEmptyChildrenAndFilterByFields(jsonFields);
             }
 
-            string jTokenResult = jToken.ToString();
+            var jTokenResult = jToken.ToString();
 
             return jTokenResult;
         }
@@ -50,10 +57,13 @@
         private IList<string> GetPropertiesIntoList(string fields)
         {
             IList<string> properties = fields.ToLowerInvariant()
-                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => x.Trim())
-                .Distinct()
-                .ToList();
+                                             .Split(new[]
+                                                    {
+                                                        ','
+                                                    }, StringSplitOptions.RemoveEmptyEntries)
+                                             .Select(x => x.Trim())
+                                             .Distinct()
+                                             .ToList();
 
             return properties;
         }

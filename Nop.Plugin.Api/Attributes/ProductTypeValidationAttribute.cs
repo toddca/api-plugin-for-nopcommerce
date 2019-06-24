@@ -1,4 +1,11 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ProductTypeValidationAttribute.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using Nop.Core.Domain.Catalog;
 
@@ -6,22 +13,22 @@ namespace Nop.Plugin.Api.Attributes
 {
     public class ProductTypeValidationAttribute : BaseValidationAttribute
     {
-        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _errors = new Dictionary<string, string>();
 
         public override void Validate(object instance)
         {
             // Product Type is not required so it could be null
             // and there is nothing to validate in this case
             if (instance == null)
+            {
                 return;
-
-            ProductType productType;
+            }
 
             var isDefined = Enum.IsDefined(typeof(ProductType), instance);
 
             if (!isDefined)
-            { 
-                _errors.Add("ProductType","Invalid product type");
+            {
+                _errors.Add("ProductType", "Invalid product type");
             }
         }
 

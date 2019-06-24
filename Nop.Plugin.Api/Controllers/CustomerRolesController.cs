@@ -1,9 +1,20 @@
-﻿using System.Collections.Generic;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="CustomerRolesController.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Linq;
-using Nop.Core.Domain.Customers;
+using System.Net;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Plugin.Api.Attributes;
-using Nop.Plugin.Api.DTOs.CustomerRoles;
+using Nop.Plugin.Api.DTO.CustomerRoles;
+using Nop.Plugin.Api.DTO.Errors;
 using Nop.Plugin.Api.JSON.ActionResults;
+using Nop.Plugin.Api.JSON.Serializers;
 using Nop.Plugin.Api.MappingExtensions;
 using Nop.Services.Customers;
 using Nop.Services.Discounts;
@@ -15,61 +26,54 @@ using Nop.Services.Stores;
 
 namespace Nop.Plugin.Api.Controllers
 {
-    using System.Net;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Mvc;
-    using Nop.Plugin.Api.DTOs.Errors;
-    using Nop.Plugin.Api.JSON.Serializers;
-
-    [ApiAuthorize(Policy = JwtBearerDefaults.AuthenticationScheme, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CustomerRolesController : BaseApiController
     {
         public CustomerRolesController(
             IJsonFieldsSerializer jsonFieldsSerializer,
-            IAclService aclService, 
-            ICustomerService customerService, 
-            IStoreMappingService storeMappingService, 
-            IStoreService storeService, 
+            IAclService aclService,
+            ICustomerService customerService,
+            IStoreMappingService storeMappingService,
+            IStoreService storeService,
             IDiscountService discountService,
-            ICustomerActivityService customerActivityService, 
+            ICustomerActivityService customerActivityService,
             ILocalizationService localizationService,
-            IPictureService pictureService) 
-            : base(jsonFieldsSerializer, 
-                  aclService, 
-                  customerService, 
-                  storeMappingService, 
-                  storeService, 
-                  discountService,
-                  customerActivityService,
-                  localizationService, 
-                  pictureService)
+            IPictureService pictureService)
+            : base(jsonFieldsSerializer,
+                   aclService,
+                   customerService,
+                   storeMappingService,
+                   storeService,
+                   discountService,
+                   customerActivityService,
+                   localizationService,
+                   pictureService)
         {
         }
 
         /// <summary>
-        /// Retrieve all customer roles
+        ///     Retrieve all customer roles
         /// </summary>
         /// <param name="fields">Fields from the customer role you want your json to contain</param>
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         [HttpGet]
         [Route("/api/customer_roles")]
-        [ProducesResponseType(typeof(CustomerRolesRootObject), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ErrorsRootObject), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(CustomerRolesRootObject), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorsRootObject), (int) HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(string), (int) HttpStatusCode.Unauthorized)]
         [GetRequestsErrorInterceptorActionFilter]
         public IActionResult GetAllCustomerRoles(string fields = "")
         {
-            IList<CustomerRole> allCustomerRoles = _customerService.GetAllCustomerRoles();
+            var allCustomerRoles = CustomerService.GetAllCustomerRoles();
 
             IList<CustomerRoleDto> customerRolesAsDto = allCustomerRoles.Select(role => role.ToDto()).ToList();
 
-            var customerRolesRootObject = new CustomerRolesRootObject()
-            {
-                CustomerRoles = customerRolesAsDto
-            };
+            var customerRolesRootObject = new CustomerRolesRootObject
+                                          {
+                                              CustomerRoles = customerRolesAsDto
+                                          };
 
-            var json = _jsonFieldsSerializer.Serialize(customerRolesRootObject, fields);
+            var json = JsonFieldsSerializer.Serialize(customerRolesRootObject, fields);
 
             return new RawJsonActionResult(json);
         }

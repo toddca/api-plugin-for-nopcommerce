@@ -1,11 +1,18 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="OrderApiService.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Data;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Core.Domain.Shipping;
-using Nop.Plugin.Api.Constants;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.DataStructures;
 
 namespace Nop.Plugin.Api.Services
@@ -21,18 +28,19 @@ namespace Nop.Plugin.Api.Services
 
         public IList<Order> GetOrdersByCustomerId(int customerId)
         {
-            var query = from order in _orderRepository.TableNoTracking
+            var query = from order in _orderRepository.Table
                         where order.CustomerId == customerId && !order.Deleted
                         orderby order.Id
                         select order;
 
-            return new ApiList<Order>(query, 0, Configurations.MaxLimit);
+            return new ApiList<Order>(query, 0, Constants.Configurations.MaxLimit);
         }
 
-        public IList<Order> GetOrders(IList<int> ids = null, DateTime? createdAtMin = null, DateTime? createdAtMax = null,
-           int limit = Configurations.DefaultLimit, int page = Configurations.DefaultPageValue, int sinceId = Configurations.DefaultSinceId, 
-           OrderStatus? status = null, PaymentStatus? paymentStatus = null, ShippingStatus? shippingStatus = null, int? customerId = null, 
-           int? storeId = null)
+        public IList<Order> GetOrders(
+            IList<int> ids = null, DateTime? createdAtMin = null, DateTime? createdAtMax = null,
+            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue, int sinceId = Constants.Configurations.DefaultSinceId,
+            OrderStatus? status = null, PaymentStatus? paymentStatus = null, ShippingStatus? shippingStatus = null, int? customerId = null,
+            int? storeId = null)
         {
             var query = GetOrdersQuery(createdAtMin, createdAtMax, status, paymentStatus, shippingStatus, ids, customerId, storeId);
 
@@ -47,25 +55,29 @@ namespace Nop.Plugin.Api.Services
         public Order GetOrderById(int orderId)
         {
             if (orderId <= 0)
+            {
                 return null;
+            }
 
             return _orderRepository.Table.FirstOrDefault(order => order.Id == orderId && !order.Deleted);
         }
 
-        public int GetOrdersCount(DateTime? createdAtMin = null, DateTime? createdAtMax = null, OrderStatus? status = null,
-                                 PaymentStatus? paymentStatus = null, ShippingStatus? shippingStatus = null,
-                                 int? customerId = null, int? storeId = null)
+        public int GetOrdersCount(
+            DateTime? createdAtMin = null, DateTime? createdAtMax = null, OrderStatus? status = null,
+            PaymentStatus? paymentStatus = null, ShippingStatus? shippingStatus = null,
+            int? customerId = null, int? storeId = null)
         {
             var query = GetOrdersQuery(createdAtMin, createdAtMax, status, paymentStatus, shippingStatus, customerId: customerId, storeId: storeId);
 
             return query.Count();
         }
 
-        private IQueryable<Order> GetOrdersQuery(DateTime? createdAtMin = null, DateTime? createdAtMax = null, OrderStatus? status = null,
-            PaymentStatus? paymentStatus = null, ShippingStatus? shippingStatus = null, IList<int> ids = null, 
+        private IQueryable<Order> GetOrdersQuery(
+            DateTime? createdAtMin = null, DateTime? createdAtMax = null, OrderStatus? status = null,
+            PaymentStatus? paymentStatus = null, ShippingStatus? shippingStatus = null, IList<int> ids = null,
             int? customerId = null, int? storeId = null)
         {
-            var query = _orderRepository.TableNoTracking;
+            var query = _orderRepository.Table;
 
             if (customerId != null)
             {
@@ -76,20 +88,20 @@ namespace Nop.Plugin.Api.Services
             {
                 query = query.Where(c => ids.Contains(c.Id));
             }
-            
+
             if (status != null)
             {
-                query = query.Where(order => order.OrderStatusId == (int)status);
+                query = query.Where(order => order.OrderStatusId == (int) status);
             }
-            
+
             if (paymentStatus != null)
             {
-                query = query.Where(order => order.PaymentStatusId == (int)paymentStatus);
+                query = query.Where(order => order.PaymentStatusId == (int) paymentStatus);
             }
-            
+
             if (shippingStatus != null)
             {
-                query = query.Where(order => order.ShippingStatusId == (int)shippingStatus);
+                query = query.Where(order => order.ShippingStatusId == (int) shippingStatus);
             }
 
             query = query.Where(order => !order.Deleted);
@@ -110,6 +122,17 @@ namespace Nop.Plugin.Api.Services
             }
 
             query = query.OrderBy(order => order.Id);
+
+            //query = query.Include(c => c.Customer);
+            //query = query.Include(c => c.BillingAddress);
+            //query = query.Include(c => c.ShippingAddress);
+            //query = query.Include(c => c.PickupAddress);
+            //query = query.Include(c => c.RedeemedRewardPointsEntry);
+            //query = query.Include(c => c.DiscountUsageHistory);
+            //query = query.Include(c => c.GiftCardUsageHistory);
+            //query = query.Include(c => c.OrderNotes);
+            //query = query.Include(c => c.OrderItems);
+            //query = query.Include(c => c.Shipments);
 
             return query;
         }

@@ -1,4 +1,11 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="Delta.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Nop.Core.Infrastructure;
@@ -9,55 +16,32 @@ namespace Nop.Plugin.Api.Delta
 {
     public class Delta<TDto> where TDto : class, new()
     {
-        private TDto _dto;
+        private readonly Dictionary<string, object> _changedJsonPropertyNames;
+
+        private readonly IJsonPropertyMapper _jsonPropertyMapper;
 
         private readonly IMappingHelper _mappingHelper = new MappingHelper();
+        private TDto _dto;
 
-        private readonly Dictionary<string, object> _changedJsonPropertyNames;
-        
-        private readonly IJsonPropertyMapper _jsonPropertyMapper;
+        private Dictionary<string, object> _propertyValuePairs;
 
         public Dictionary<object, object> ObjectPropertyNameValuePairs = new Dictionary<object, object>();
 
-        private Dictionary<string, object> _propertyValuePairs; 
-
-        private Dictionary<string, object> PropertyValuePairs
-        {
-            get
-            {
-                if (_propertyValuePairs == null)
-                {
-                    _propertyValuePairs = GetPropertyValuePairs(typeof(TDto), _changedJsonPropertyNames);
-                }
-
-                return _propertyValuePairs;
-            }
-        } 
-
-        public TDto Dto
-        {
-            get
-            {
-                if (_dto == null)
-                {
-                    _dto = new TDto();
-                }
-
-                return _dto;
-            }
-        }
-
-        public Delta(Dictionary<string, object> passedChangedJsonPropertyValuePaires)
+        public Delta(Dictionary<string, object> passedChangedJsonPropertyValuePairs)
         {
             _jsonPropertyMapper = EngineContext.Current.Resolve<IJsonPropertyMapper>();
-            _changedJsonPropertyNames = passedChangedJsonPropertyValuePaires;
+            _changedJsonPropertyNames = passedChangedJsonPropertyValuePairs;
 
             _mappingHelper.SetValues(PropertyValuePairs, Dto, typeof(TDto), ObjectPropertyNameValuePairs, true);
         }
 
+        private Dictionary<string, object> PropertyValuePairs => _propertyValuePairs ?? (_propertyValuePairs = GetPropertyValuePairs(typeof(TDto), _changedJsonPropertyNames));
+
+        public TDto Dto => _dto ?? (_dto = new TDto());
+
         public void Merge<TEntity>(TEntity entity, bool mergeComplexTypeCollections = true)
         {
-            _mappingHelper.SetValues(PropertyValuePairs, entity, entity.GetType(), null,mergeComplexTypeCollections);
+            _mappingHelper.SetValues(PropertyValuePairs, entity, entity.GetType(), null, mergeComplexTypeCollections);
         }
 
         public void Merge<TEntity>(object dto, TEntity entity, bool mergeComplexTypeCollections = true)
@@ -69,25 +53,27 @@ namespace Nop.Plugin.Api.Delta
             }
         }
 
-       private Dictionary<string, object> GetPropertyValuePairs(Type type, Dictionary<string, object> changedJsonPropertyNames)
+        private Dictionary<string, object> GetPropertyValuePairs(Type type, Dictionary<string, object> changedJsonPropertyNames)
         {
             var propertyValuePairs = new Dictionary<string, object>();
 
             if (changedJsonPropertyNames == null)
+            {
                 return propertyValuePairs;
+            }
 
-            Dictionary<string, Tuple<string, Type>> typeMap = _jsonPropertyMapper.GetMap(type);
+            var typeMap = _jsonPropertyMapper.GetMap(type);
 
             foreach (var changedProperty in changedJsonPropertyNames)
             {
-                string jsonName = changedProperty.Key;
+                var jsonName = changedProperty.Key;
 
                 if (typeMap.ContainsKey(jsonName))
                 {
-                    Tuple<string, Type> propertyNameAndType = typeMap[jsonName];
+                    var propertyNameAndType = typeMap[jsonName];
 
-                    string propertyName = propertyNameAndType.Item1;
-                    Type propertyType = propertyNameAndType.Item2;
+                    var propertyName = propertyNameAndType.Item1;
+                    var propertyType = propertyNameAndType.Item2;
 
                     // Handle system types
                     // This is also the recursion base
@@ -101,11 +87,13 @@ namespace Nop.Plugin.Api.Delta
                         // skip any collections that are passed as null
                         // we can handle only empty collection, which will delete any items if exist
                         // or collections that has some elements which need to be updated/added/deleted.
-                        if(changedProperty.Value == null)
+                        if (changedProperty.Value == null)
+                        {
                             continue;
+                        }
 
-                            var collection = changedProperty.Value as IEnumerable<object>;
-                        Type collectionElementsType = propertyType.GetGenericArguments()[0];
+                        var collection = changedProperty.Value as IEnumerable<object>;
+                        var collectionElementsType = propertyType.GetGenericArguments()[0];
                         var resultCollection = new List<object>();
 
                         foreach (var item in collection)
@@ -119,10 +107,10 @@ namespace Nop.Plugin.Api.Delta
                             else
                             {
                                 // the complex type could be null so we try a defensive cast
-                                Dictionary<string, object> itemDictionary =
+                                var itemDictionary =
                                     item as Dictionary<string, object>;
 
-                                resultCollection.Add(GetPropertyValuePairs(collectionElementsType,itemDictionary));
+                                resultCollection.Add(GetPropertyValuePairs(collectionElementsType, itemDictionary));
                             }
                         }
 
@@ -132,7 +120,7 @@ namespace Nop.Plugin.Api.Delta
                     else
                     {
                         // the complex type could be null so we try a defensive cast
-                        Dictionary<string, object> changedPropertyValueDictionary =
+                        var changedPropertyValueDictionary =
                             changedProperty.Value as Dictionary<string, object>;
 
                         var resultedNestedObject = GetPropertyValuePairs(propertyType, changedPropertyValueDictionary);

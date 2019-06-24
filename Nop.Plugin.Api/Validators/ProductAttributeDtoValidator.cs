@@ -1,41 +1,38 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="ProductAttributeDtoValidator.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System.Collections.Generic;
-using FluentValidation;
-using Nop.Plugin.Api.DTOs.ProductAttributes;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
+using Nop.Plugin.Api.DTO.ProductAttributes;
+using Nop.Plugin.Api.Helpers;
 
 namespace Nop.Plugin.Api.Validators
 {
-    public class ProductAttributeDtoValidator : AbstractValidator<ProductAttributeDto>
+    [UsedImplicitly]
+    public class ProductAttributeDtoValidator : BaseDtoValidator<ProductAttributeDto>
     {
-        public ProductAttributeDtoValidator(string httpMethod, Dictionary<string, object> passedPropertyValuePaires)
+        #region Constructors
+
+        public ProductAttributeDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) :
+            base(httpContextAccessor, jsonHelper, requestJsonDictionary)
         {
-            if (string.IsNullOrEmpty(httpMethod) || httpMethod.Equals("post", StringComparison.InvariantCultureIgnoreCase))
-            {
-                SetNameRule();
-            }
-            else if (httpMethod.Equals("put", StringComparison.InvariantCultureIgnoreCase))
-            {
-                int parsedId = 0;
-
-                RuleFor(x => x.Id)
-                        .NotNull()
-                        .NotEmpty()
-                        .Must(id => int.TryParse(id, out parsedId) && parsedId > 0)
-                        .WithMessage("invalid id");
-
-                if (passedPropertyValuePaires.ContainsKey("name"))
-                {
-                    SetNameRule();
-                }
-            }
+            SetNameRule();
         }
+
+        #endregion
+
+        #region Private Methods
 
         private void SetNameRule()
         {
-            RuleFor(x => x.Name)
-                       .NotNull()
-                       .NotEmpty()
-                       .WithMessage("name is required");
+            SetNotNullOrEmptyCreateOrUpdateRule(p => p.Name, "invalid name", "name");
         }
+
+        #endregion
     }
 }

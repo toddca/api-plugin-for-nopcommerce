@@ -1,47 +1,42 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="OrderItemDtoValidator.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System.Collections.Generic;
-using FluentValidation;
-using Nop.Plugin.Api.DTOs.OrderItems;
+using Microsoft.AspNetCore.Http;
+using Nop.Plugin.Api.DTO.OrderItems;
+using Nop.Plugin.Api.Helpers;
 
 namespace Nop.Plugin.Api.Validators
 {
-    public class OrderItemDtoValidator : AbstractValidator<OrderItemDto>
+    public class OrderItemDtoValidator : BaseDtoValidator<OrderItemDto>
     {
-        public OrderItemDtoValidator(string httpMethod, Dictionary<string, object> passedPropertyValuePaires)
-        {
-            if (string.IsNullOrEmpty(httpMethod) ||
-                httpMethod.Equals("post", StringComparison.InvariantCultureIgnoreCase))
-            {
-                SetProductRule();
-                SetQuantityRule();
-            }
-            else if (httpMethod.Equals("put", StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (passedPropertyValuePaires.ContainsKey("product_id"))
-                {
-                    SetProductRule();
-                }
+        #region Constructors
 
-                if (passedPropertyValuePaires.ContainsKey("quantity"))
-                {
-                    SetQuantityRule();
-                }
-            }
+        public OrderItemDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) :
+            base(httpContextAccessor, jsonHelper, requestJsonDictionary)
+        {
+            SetProductIdRule();
+            SetQuantityRule();
         }
 
-        private void SetProductRule()
+        #endregion
+
+        #region Private Methods
+
+        private void SetProductIdRule()
         {
-            RuleFor(x => x.ProductId)
-                    .NotNull()
-                    .WithMessage("Invalid product id");
+            SetGreaterThanZeroCreateOrUpdateRule(o => o.ProductId, "invalid product_id", "product_id");
         }
 
         private void SetQuantityRule()
         {
-            RuleFor(x => x.Quantity)
-                    .NotNull()
-                    .Must(quantity => quantity > 0)
-                    .WithMessage("Invalid quantity");
+            SetGreaterThanZeroCreateOrUpdateRule(o => o.Quantity, "invalid quanitty", "quantity");
         }
+
+        #endregion
     }
 }

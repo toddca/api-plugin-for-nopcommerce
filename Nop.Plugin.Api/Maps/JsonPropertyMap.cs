@@ -1,11 +1,18 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2019" to="2019" file="JsonPropertyMap.cs" company="Lindell Technologies">
+// //    Copyright (c) Lindell Technologies All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Newtonsoft.Json;
 using Nop.Core.Caching;
 using Nop.Core.Infrastructure;
 using Nop.Plugin.Api.Attributes;
-using Nop.Plugin.Api.Constants;
+using Nop.Plugin.Api.Infrastructure;
 
 namespace Nop.Plugin.Api.Maps
 {
@@ -13,27 +20,16 @@ namespace Nop.Plugin.Api.Maps
     {
         private IStaticCacheManager _cacheManager;
 
-        private IStaticCacheManager StaticCacheManager
-        {
-            get
-            {
-                if (_cacheManager == null)
-                {
-                    _cacheManager = EngineContext.Current.Resolve<IStaticCacheManager>();
-                }
-
-                return _cacheManager;
-            }
-        }
+        private IStaticCacheManager StaticCacheManager => _cacheManager ?? (_cacheManager = EngineContext.Current.Resolve<IStaticCacheManager>());
 
         public Dictionary<string, Tuple<string, Type>> GetMap(Type type)
         {
-            if (!StaticCacheManager.IsSet(Configurations.JsonTypeMapsPattern))
+            if (!StaticCacheManager.IsSet(Constants.Configurations.JsonTypeMapsPattern))
             {
-                StaticCacheManager.Set(Configurations.JsonTypeMapsPattern, new Dictionary<string, Dictionary<string, Tuple<string, Type>>>(), int.MaxValue);
+                StaticCacheManager.Set(Constants.Configurations.JsonTypeMapsPattern, new Dictionary<string, Dictionary<string, Tuple<string, Type>>>(), int.MaxValue);
             }
 
-            var typeMaps = StaticCacheManager.Get<Dictionary<string, Dictionary<string, Tuple<string, Type>>>>(Configurations.JsonTypeMapsPattern);
+            var typeMaps = StaticCacheManager.Get<Dictionary<string, Dictionary<string, Tuple<string, Type>>>>(Constants.Configurations.JsonTypeMapsPattern, () => null, 0);
 
             if (!typeMaps.ContainsKey(type.Name))
             {
@@ -45,17 +41,17 @@ namespace Nop.Plugin.Api.Maps
 
         private void Build(Type type)
         {
-            Dictionary<string, Dictionary<string, Tuple<string, Type>>> typeMaps =
-                StaticCacheManager.Get<Dictionary<string, Dictionary<string, Tuple<string, Type>>>>(Configurations.JsonTypeMapsPattern);
+            var typeMaps =
+                StaticCacheManager.Get<Dictionary<string, Dictionary<string, Tuple<string, Type>>>>(Constants.Configurations.JsonTypeMapsPattern, () => null, 0);
 
             var mapForCurrentType = new Dictionary<string, Tuple<string, Type>>();
 
             var typeProps = type.GetProperties();
-            
+
             foreach (var property in typeProps)
             {
-                JsonPropertyAttribute jsonAttribute = property.GetCustomAttribute(typeof(JsonPropertyAttribute)) as JsonPropertyAttribute;
-                DoNotMapAttribute doNotMapAttribute = property.GetCustomAttribute(typeof(DoNotMapAttribute)) as DoNotMapAttribute;
+                var jsonAttribute = property.GetCustomAttribute(typeof(JsonPropertyAttribute)) as JsonPropertyAttribute;
+                var doNotMapAttribute = property.GetCustomAttribute(typeof(DoNotMapAttribute)) as DoNotMapAttribute;
 
                 // If it has json attribute set and is not marked as doNotMap
                 if (jsonAttribute != null && doNotMapAttribute == null)
@@ -67,7 +63,7 @@ namespace Nop.Plugin.Api.Maps
                     }
                 }
             }
-            
+
             if (!typeMaps.ContainsKey(type.Name))
             {
                 typeMaps.Add(type.Name, mapForCurrentType);
