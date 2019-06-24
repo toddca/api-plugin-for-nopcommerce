@@ -38,4 +38,4 @@ With the nopCommerce API, you can perform any of the four CRUD actions against a
 
 ## What about security?
 
-The API plugin currently supports OAuth 2.0 Authorization Code grant type flow. So in order to access the resource endpoints you need to provide a valid AccessToken. To understand how the authorization code grant flow works please refer to the [**Sample Application**](https://github.com/SevenSpikes/nopCommerce-Api-SampleApplication).
+The API plugin for 4.2 now uses a custom nopCommerce role, basic auth and a JWT token for auth. After installing the plugin go to the Admin portal and add any user whom should have API access to the "Api Users" role. Any user in this role has permissions to access the API.
