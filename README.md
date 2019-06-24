@@ -38,4 +38,10 @@ With the nopCommerce API, you can perform any of the four CRUD actions against a
 
 ## What about security?
 
-The API plugin for 4.2 now uses a custom nopCommerce role, basic auth and a JWT token for auth. After installing the plugin go to the Admin portal and add any user whom should have API access to the "Api Users" role. Any user in this role has permissions to access the API.
+The API plugin for 4.2 now uses a custom nopCommerce role, basic auth and a JWT token for auth. 
+
+1. After installing the plugin go to the Admin portal and add any user whom should have API access to the "Api Users" role. 
+Any user in this role has permissions to access the API. 
+2. Make a GET request to {your_server_name}/token?username={email_address}&password={password}
+3. You will recieve an access_token which you will use is subsequent requests.
+4. Once you have an access token submit it via Bearer token request
