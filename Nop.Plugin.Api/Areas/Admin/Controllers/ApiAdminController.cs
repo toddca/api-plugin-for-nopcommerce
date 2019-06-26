@@ -55,7 +55,7 @@ namespace Nop.Plugin.Api.Areas.Admin.Controllers
             //now clear settings cache
             _settingService.ClearCache();
 
-            return View("~/Areas/Admin/Views/ApiAdmin/Settings.cshtml", model);
+            return View($"~/Plugins/Nop.Plugin.Api/Areas/Admin/Views/ApiAdmin/Settings.cshtml", model);
         }
 
         [HttpPost]
@@ -82,7 +82,7 @@ namespace Nop.Plugin.Api.Areas.Admin.Controllers
 
             _notificationService.SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
 
-            return View("~/Areas/Admin/Views/ApiAdmin/Settings.cshtml", model);
+            return View($"~/Plugins/Nop.Plugin.Api/Areas/Admin/Views/ApiAdmin/Settings.cshtml", model);
         }
     }
 }
