@@ -50,8 +50,21 @@ Please note, these settings are defaulted to good/valid values to quickly enable
 ## Security
 The API plugin for 4.2 now uses a custom nopCommerce role, basic auth and a JWT token for auth. 
 
-1. After installing the plugin go to the Admin portal and add any user whom should have API access to the "Api Users" role. 
-Any user in this role has permissions to access the API. 
-2. Make a GET request to {your_server_name}/token?username={email_address}&password={password}
-3. You will recieve an access_token which you will use is subsequent requests.
-4. Once you have an access token submit it via Bearer token request
+## Getting Started
+
+1. Uninstall any previous API plugin based on this or source project.
+2. Build and Install this plugin.
+3. Optional: Make config changes to appsettings.json as mentioned in the "Configuration" section of this document.
+4. Add any user whom should have API access to the "Api Users" role. Any user in this role has permissions to access the API. 
+5. Make a POST request to generate an access token which will be used to access the API. The token generation service is at /token. Example: POST: {your_server_name}/token?username={email_address}&password={password}
+6. If the user's credentials are correct you will recieve an access_token in the response from calling POST /token which you will use is subsequent requests to the NopCommerce API.
+7. Once you have an access token submit it via Bearer token request. By default the token does not have an expiry.
+
+
+
+
+
+
+
+
+
