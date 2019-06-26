@@ -51,7 +51,6 @@ Please note, these settings are defaulted to good/valid values to quickly enable
 The API plugin for 4.2 now uses a custom nopCommerce role, basic auth and a JWT token for auth. 
 
 ## Getting Started
-
 1. Uninstall any previous API plugin based on this or source project.
 2. Build and Install this plugin.
 3. Optional: Make config changes to appsettings.json as mentioned in the "Configuration" section of this document.
