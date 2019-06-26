@@ -36,8 +36,18 @@ A resource is a data object that can be accessed via an HTTP request. The API al
 
 With the nopCommerce API, you can perform any of the four CRUD actions against any of your nopCommerce site’s resources listed above. For example, you can use the API to create a product, retrieve a product, update a product or delete a product associated with your nopCommerce website.
 
-## What about security?
+## Configuration
+A couple of configuration variables have been moved into appsettings.json. Once you are ready to deploy this solution it is recommended to add the following to your appsettings.json and generate a unique SecurityKey. 
+ 
+ "Api": {
+    "AllowedClockSkewInMinutes": 5,
+    "SecurityKey": "please-generate-some-string"
+  }
 
+Please note, these settings are defaulted to good/valid values to quickly enable development. 
+  
+  
+## Security
 The API plugin for 4.2 now uses a custom nopCommerce role, basic auth and a JWT token for auth. 
 
 1. After installing the plugin go to the Admin portal and add any user whom should have API access to the "Api Users" role. 

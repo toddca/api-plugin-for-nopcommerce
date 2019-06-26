@@ -4,6 +4,6 @@
     {
         public int AllowedClockSkewInMinutes { get; set; } = 5;
 
-        public string SecurityKey { get; set; }
+        public string SecurityKey { get; set; } = "NowIsTheTimeForAllGoodMenToComeToTheAideOfTheirCountry";
     }
 }
