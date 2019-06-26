@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="AddressDtoMappings.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using Nop.Core.Domain.Common;
+﻿using Nop.Core.Domain.Common;
 using Nop.Plugin.Api.AutoMapper;
 using Nop.Plugin.Api.DTO;
 

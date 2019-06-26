@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="DependencyRegister.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Autofac;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
@@ -67,11 +60,11 @@ namespace Nop.Plugin.Api.Infrastructure
             builder.RegisterType<CustomerRolesHelper>().As<ICustomerRolesHelper>().InstancePerLifetimeScope();
             builder.RegisterType<JsonHelper>().As<IJsonHelper>().InstancePerLifetimeScope();
             builder.RegisterType<DTOHelper>().As<IDTOHelper>().InstancePerLifetimeScope();
-            
+
             builder.RegisterType<JsonFieldsSerializer>().As<IJsonFieldsSerializer>().InstancePerLifetimeScope();
 
             builder.RegisterType<FieldsValidator>().As<IFieldsValidator>().InstancePerLifetimeScope();
-            
+
             builder.RegisterType<ObjectConverter>().As<IObjectConverter>().InstancePerLifetimeScope();
             builder.RegisterType<ApiTypeConverter>().As<IApiTypeConverter>().InstancePerLifetimeScope();
 

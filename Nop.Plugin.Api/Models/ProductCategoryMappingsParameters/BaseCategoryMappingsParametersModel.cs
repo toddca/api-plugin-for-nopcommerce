@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="BaseCategoryMappingsParametersModel.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Nop.Plugin.Api.Models.ProductCategoryMappingsParameters
 {

@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="BaseOrdersParametersModel.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using Newtonsoft.Json;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;

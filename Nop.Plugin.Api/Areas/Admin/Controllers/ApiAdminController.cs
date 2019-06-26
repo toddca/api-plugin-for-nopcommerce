@@ -17,17 +17,17 @@ namespace Nop.Plugin.Api.Areas.Admin.Controllers
     [Area(AreaNames.Admin)]
     public class ApiAdminController : BasePluginController
     {
-        private readonly IStoreContext _storeContext;
-        private readonly ISettingService _settingService;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly ILocalizationService _localizationService;
         private readonly INotificationService _notificationService;
+        private readonly ISettingService _settingService;
+        private readonly IStoreContext _storeContext;
 
         public ApiAdminController(
             IStoreContext storeContext,
             ISettingService settingService,
             ICustomerActivityService customerActivityService,
-            ILocalizationService localizationService, 
+            ILocalizationService localizationService,
             INotificationService notificationService)
         {
             _storeContext = storeContext;
@@ -36,23 +36,22 @@ namespace Nop.Plugin.Api.Areas.Admin.Controllers
             _localizationService = localizationService;
             _notificationService = notificationService;
         }
-        
+
         [HttpGet]
-        public ActionResult Settings()
+        public IActionResult Settings()
         {
-
             var storeScope = _storeContext.ActiveStoreScopeConfiguration;
-
             var apiSettings = _settingService.LoadSetting<ApiSettings>(storeScope);
-
             var model = apiSettings.ToModel();
 
             // Store Settings
             model.ActiveStoreScopeConfiguration = storeScope;
 
             if (model.EnableApi_OverrideForStore || storeScope == 0)
+            {
                 _settingService.SaveSetting(apiSettings, x => x.EnableApi, storeScope, false);
-            
+            }
+
             //now clear settings cache
             _settingService.ClearCache();
 
@@ -60,7 +59,7 @@ namespace Nop.Plugin.Api.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Settings(ConfigurationModel model)
+        public IActionResult Settings(ConfigurationModel model)
         {
             //load settings for a chosen store scope
             var storeScope = _storeContext.ActiveStoreScopeConfiguration;
@@ -72,8 +71,10 @@ namespace Nop.Plugin.Api.Areas.Admin.Controllers
             * and loaded from database after each update */
 
             if (model.EnableApi_OverrideForStore || storeScope == 0)
+            {
                 _settingService.SaveSetting(settings, x => x.EnableApi, storeScope, false);
-            
+            }
+
             //now clear settings cache
             _settingService.ClearCache();
 

@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="ConfigurationModel.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using Nop.Web.Framework.Mvc.ModelBinding;
+﻿using Nop.Web.Framework.Mvc.ModelBinding;
 
 namespace Nop.Plugin.Api.Areas.Admin.Models
 {

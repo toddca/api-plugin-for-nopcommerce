@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="Delta.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Nop.Core.Infrastructure;
@@ -35,7 +28,8 @@ namespace Nop.Plugin.Api.Delta
             _mappingHelper.SetValues(PropertyValuePairs, Dto, typeof(TDto), ObjectPropertyNameValuePairs, true);
         }
 
-        private Dictionary<string, object> PropertyValuePairs => _propertyValuePairs ?? (_propertyValuePairs = GetPropertyValuePairs(typeof(TDto), _changedJsonPropertyNames));
+        private Dictionary<string, object> PropertyValuePairs =>
+            _propertyValuePairs ?? (_propertyValuePairs = GetPropertyValuePairs(typeof(TDto), _changedJsonPropertyNames));
 
         public TDto Dto => _dto ?? (_dto = new TDto());
 

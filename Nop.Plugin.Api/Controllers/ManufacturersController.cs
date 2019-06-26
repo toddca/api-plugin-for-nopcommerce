@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="ManufacturersController.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,13 +7,13 @@ using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Discounts;
 using Nop.Core.Domain.Media;
 using Nop.Plugin.Api.Attributes;
-using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.Delta;
 using Nop.Plugin.Api.DTO.Errors;
 using Nop.Plugin.Api.DTO.Images;
 using Nop.Plugin.Api.DTO.Manufacturers;
 using Nop.Plugin.Api.Factories;
 using Nop.Plugin.Api.Helpers;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.JSON.ActionResults;
 using Nop.Plugin.Api.JSON.Serializers;
 using Nop.Plugin.Api.ModelBinders;

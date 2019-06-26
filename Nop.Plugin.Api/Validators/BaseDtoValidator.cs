@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="BaseDtoValidator.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -67,7 +60,8 @@ namespace Nop.Plugin.Api.Validators
 
         protected IHttpContextAccessor HttpContextAccessor { get; }
 
-        protected Dictionary<string, object> RequestJsonDictionary => _requestValuesDictionary ?? (_requestValuesDictionary = GetRequestJsonDictionaryDictionaryFromHttpContext());
+        protected Dictionary<string, object> RequestJsonDictionary =>
+            _requestValuesDictionary ?? (_requestValuesDictionary = GetRequestJsonDictionaryDictionaryFromHttpContext());
 
         protected IJsonHelper JsonHelper { get; }
 

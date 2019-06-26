@@ -1,18 +1,11 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="ManufacturerApiService.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Localization;
-using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.DataStructures;
+using Nop.Plugin.Api.Infrastructure;
 
 namespace Nop.Plugin.Api.Services
 {
@@ -35,7 +28,8 @@ namespace Nop.Plugin.Api.Services
         public IList<Manufacturer> GetManufacturers(
             IList<int> ids = null,
             DateTime? createdAtMin = null, DateTime? createdAtMax = null, DateTime? updatedAtMin = null, DateTime? updatedAtMax = null,
-            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue, int sinceId = Constants.Configurations.DefaultSinceId,
+            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue,
+            int sinceId = Constants.Configurations.DefaultSinceId,
             int? productId = null, bool? publishedStatus = null, int? languageId = null)
         {
             var query = GetManufacturersQuery(createdAtMin, createdAtMax, updatedAtMin, updatedAtMax, publishedStatus, productId, ids);

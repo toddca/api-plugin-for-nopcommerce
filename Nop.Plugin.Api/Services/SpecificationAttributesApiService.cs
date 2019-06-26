@@ -1,16 +1,9 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="SpecificationAttributesApiService.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
-using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.DataStructures;
+using Nop.Plugin.Api.Infrastructure;
 
 namespace Nop.Plugin.Api.Services
 {
@@ -29,7 +22,8 @@ namespace Nop.Plugin.Api.Services
 
         public IList<ProductSpecificationAttribute> GetProductSpecificationAttributes(
             int? productId = null, int? specificationAttributeOptionId = null, bool? allowFiltering = null, bool? showOnProductPage = null,
-            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue, int sinceId = Constants.Configurations.DefaultSinceId)
+            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue,
+            int sinceId = Constants.Configurations.DefaultSinceId)
         {
             var query = _productSpecificationAttributesRepository.Table;
 
@@ -64,7 +58,8 @@ namespace Nop.Plugin.Api.Services
         }
 
         public IList<SpecificationAttribute> GetSpecificationAttributes(
-            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue, int sinceId = Constants.Configurations.DefaultSinceId)
+            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue,
+            int sinceId = Constants.Configurations.DefaultSinceId)
         {
             var query = _specificationAttributesRepository.Table;
 

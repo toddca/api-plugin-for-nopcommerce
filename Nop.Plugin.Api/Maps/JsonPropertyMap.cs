@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="JsonPropertyMap.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -26,10 +19,12 @@ namespace Nop.Plugin.Api.Maps
         {
             if (!StaticCacheManager.IsSet(Constants.Configurations.JsonTypeMapsPattern))
             {
-                StaticCacheManager.Set(Constants.Configurations.JsonTypeMapsPattern, new Dictionary<string, Dictionary<string, Tuple<string, Type>>>(), int.MaxValue);
+                StaticCacheManager.Set(Constants.Configurations.JsonTypeMapsPattern, new Dictionary<string, Dictionary<string, Tuple<string, Type>>>(),
+                                       int.MaxValue);
             }
 
-            var typeMaps = StaticCacheManager.Get<Dictionary<string, Dictionary<string, Tuple<string, Type>>>>(Constants.Configurations.JsonTypeMapsPattern, () => null, 0);
+            var typeMaps =
+                StaticCacheManager.Get<Dictionary<string, Dictionary<string, Tuple<string, Type>>>>(Constants.Configurations.JsonTypeMapsPattern, () => null, 0);
 
             if (!typeMaps.ContainsKey(type.Name))
             {

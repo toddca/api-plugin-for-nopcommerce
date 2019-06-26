@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="ApiPlugin.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using Nop.Core;
+﻿using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Plugin.Api.Domain;
 using Nop.Services.Configuration;
@@ -18,17 +11,17 @@ namespace Nop.Plugin.Api.Infrastructure
 {
     public class ApiPlugin : BasePlugin, IAdminMenuPlugin
     {
+        private readonly ICustomerService _customerService;
         private readonly ILocalizationService _localizationService;
         private readonly ISettingService _settingService;
         private readonly IWebHelper _webHelper;
         private readonly IWorkContext _workContext;
-        private readonly ICustomerService _customerService;
 
         public ApiPlugin(
-            ISettingService settingService, 
+            ISettingService settingService,
             IWorkContext workContext,
             ICustomerService customerService,
-            ILocalizationService localizationService, 
+            ILocalizationService localizationService,
             IWebHelper webHelper)
         {
             _settingService = settingService;
@@ -37,7 +30,7 @@ namespace Nop.Plugin.Api.Infrastructure
             _localizationService = localizationService;
             _webHelper = webHelper;
         }
-        
+
         public override void Install()
         {
             //locales
@@ -49,16 +42,16 @@ namespace Nop.Plugin.Api.Infrastructure
             _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Api.Admin.EnableApi", "Enable Api");
             _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Api.Admin.EnableApi.Hint",
                                                                  "By checking this settings you can Enable/Disable the Web Api");
-            
+
             _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Api.Admin.Menu.Title", "API");
             _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Api.Admin.Menu.Settings.Title", "Settings");
-            
+
             _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Api.Admin.Page.Settings.Title", "Api Settings");
-            
-            
+
+
             _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Api.Admin.Settings.GeneralSettingsTitle", "General Settings");
             _localizationService.AddOrUpdatePluginLocaleResource("Plugins.Api.Admin.Edit", "Edit");
-            
+
             _localizationService.AddOrUpdatePluginLocaleResource("Api.Categories.Fields.Id.Invalid", "Id is invalid");
             _localizationService.AddOrUpdatePluginLocaleResource("Api.InvalidPropertyType", "Invalid Property Type");
             _localizationService.AddOrUpdatePluginLocaleResource("Api.InvalidType", "Invalid {0} type");
@@ -69,20 +62,20 @@ namespace Nop.Plugin.Api.Infrastructure
             _localizationService.AddOrUpdatePluginLocaleResource("Api.Category.InvalidImageAttachmentFormat", "Invalid image attachment base64 format");
             _localizationService.AddOrUpdatePluginLocaleResource("Api.Category.InvalidImageSrc", "Invalid image source");
             _localizationService.AddOrUpdatePluginLocaleResource("Api.Category.InvalidImageSrcType", "You have provided an invalid image source/attachment ");
-            
+
             _settingService.SaveSetting(new ApiSettings());
 
             var apiRole = _customerService.GetCustomerRoleBySystemName(Constants.Roles.ApiRoleSystemName);
 
-            if(apiRole == null)
+            if (apiRole == null)
             {
                 apiRole = new CustomerRole
-                              {
-                                  Name = Constants.Roles.ApiRoleName,
-                                  Active = true,
-                                  SystemName = Constants.Roles.ApiRoleSystemName
-                              };
-                
+                          {
+                              Name = Constants.Roles.ApiRoleName,
+                              Active = true,
+                              SystemName = Constants.Roles.ApiRoleSystemName
+                          };
+
                 _customerService.InsertCustomerRole(apiRole);
             }
             else if (apiRole.Active == false)
@@ -90,7 +83,7 @@ namespace Nop.Plugin.Api.Infrastructure
                 apiRole.Active = true;
                 _customerService.UpdateCustomerRole(apiRole);
             }
-            
+
 
             base.Install();
 
@@ -101,7 +94,6 @@ namespace Nop.Plugin.Api.Infrastructure
 
         public override void Uninstall()
         {
-         
             //locales
             _localizationService.DeletePluginLocaleResource("Plugins.Api");
 
@@ -133,7 +125,7 @@ namespace Nop.Plugin.Api.Infrastructure
             var pluginMenuName = _localizationService.GetResource("Plugins.Api.Admin.Menu.Title", _workContext.WorkingLanguage.Id, defaultValue: "API");
 
             var settingsMenuName = _localizationService.GetResource("Plugins.Api.Admin.Menu.Settings.Title", _workContext.WorkingLanguage.Id, defaultValue: "API");
-            
+
             const string adminUrlPart = "Admin/";
 
             var pluginMainMenu = new SiteMapNode
@@ -152,7 +144,7 @@ namespace Nop.Plugin.Api.Infrastructure
                                               SystemName = "Api-Settings-Menu",
                                               IconClass = "fa-genderless"
                                           });
-            
+
 
             rootNode.ChildNodes.Add(pluginMainMenu);
         }

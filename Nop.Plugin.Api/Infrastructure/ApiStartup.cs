@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="ApiStartup.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,7 +27,7 @@ namespace Nop.Plugin.Api.Infrastructure
             if (apiConfigSection != null)
             {
                 var apiConfig = services.ConfigureStartupConfig<ApiConfiguration>(apiConfigSection);
-                
+
                 if (!string.IsNullOrEmpty(apiConfig.SecurityKey))
                 {
                     services.AddAuthentication(options =>
@@ -51,7 +44,8 @@ namespace Nop.Plugin.Api.Infrastructure
                                                                                      new SymmetricSecurityKey(Encoding.UTF8.GetBytes(apiConfig.SecurityKey)),
                                                                                  ValidateIssuer = false, // ValidIssuer = "The name of the issuer",
                                                                                  ValidateAudience = false, // ValidAudience = "The name of the audience",
-                                                                                 ValidateLifetime = true, // validate the expiration and not before values in the token
+                                                                                 ValidateLifetime =
+                                                                                     true, // validate the expiration and not before values in the token
                                                                                  ClockSkew = TimeSpan.FromMinutes(5) //5 minute tolerance for the expiration date
                                                                              };
                             });

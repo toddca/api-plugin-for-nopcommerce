@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="TokenController.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -32,7 +25,7 @@ namespace Nop.Plugin.Api.Controllers
         private readonly ICustomerRegistrationService _customerRegistrationService;
         private readonly ICustomerService _customerService;
         private readonly CustomerSettings _customerSettings;
-        
+
         public TokenController(
             ICustomerService customerService,
             ICustomerRegistrationService customerRegistrationService,

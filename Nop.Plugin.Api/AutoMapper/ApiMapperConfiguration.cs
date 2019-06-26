@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="ApiMapperConfiguration.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using AutoMapper;
@@ -37,7 +30,6 @@ using Nop.Plugin.Api.DTO.ShoppingCarts;
 using Nop.Plugin.Api.DTO.SpecificationAttributes;
 using Nop.Plugin.Api.DTO.Stores;
 using Nop.Plugin.Api.MappingExtensions;
-using Nop.Plugin.Api.Models;
 
 namespace Nop.Plugin.Api.AutoMapper
 {

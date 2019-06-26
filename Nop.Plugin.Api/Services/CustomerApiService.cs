@@ -1,10 +1,3 @@
-// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="CustomerApiService.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -17,10 +10,10 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Messages;
-using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.DataStructures;
 using Nop.Plugin.Api.DTO.Customers;
 using Nop.Plugin.Api.Helpers;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.MappingExtensions;
 using Nop.Services.Localization;
 using Nop.Services.Stores;
@@ -292,7 +285,8 @@ namespace Nop.Plugin.Api.Services
         /// <returns></returns>
         private IList<CustomerDto> HandleCustomerGenericAttributes(
             IReadOnlyDictionary<string, string> searchParams, IQueryable<Customer> query,
-            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue, string order = Constants.Configurations.DefaultOrder)
+            int limit = Constants.Configurations.DefaultLimit, int page = Constants.Configurations.DefaultPageValue,
+            string order = Constants.Configurations.DefaultOrder)
         {
             // Here we join the GenericAttribute records with the customers and making sure that we are working only with the attributes
             // that are in the customers keyGroup and their keys are either first or last name.
@@ -356,7 +350,8 @@ namespace Nop.Plugin.Api.Services
         /// </summary>
         private IList<CustomerDto> GetFullCustomerDtos(
             IQueryable<IGrouping<int, CustomerAttributeMappingDto>> customerAttributesMappings,
-            int page = Constants.Configurations.DefaultPageValue, int limit = Constants.Configurations.DefaultLimit, string order = Constants.Configurations.DefaultOrder)
+            int page = Constants.Configurations.DefaultPageValue, int limit = Constants.Configurations.DefaultLimit,
+            string order = Constants.Configurations.DefaultOrder)
         {
             var customerDtos = new List<CustomerDto>();
 

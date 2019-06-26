@@ -1,11 +1,4 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="Constants.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-namespace Nop.Plugin.Api.Infrastructure
+﻿namespace Nop.Plugin.Api.Infrastructure
 {
     public static class Constants
     {
@@ -35,7 +28,9 @@ namespace Nop.Plugin.Api.Infrastructure
             public const int DefaultCustomerId = 0;
             public const string DefaultOrder = "Id";
             public const int MaxLimit = 250;
+
             public const int MinLimit = 1;
+
             //public const string PublishedStatus = "published";
             //public const string UnpublishedStatus = "unpublished";
             //public const string AnyStatus = "any";

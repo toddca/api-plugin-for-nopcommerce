@@ -1,22 +1,14 @@
-﻿// // -----------------------------------------------------------------------
-// // <copyright from="2019" to="2019" file="ProductAttributesController.cs" company="Lindell Technologies">
-// //    Copyright (c) Lindell Technologies All Rights Reserved.
-// //    Information Contained Herein is Proprietary and Confidential.
-// // </copyright>
-// // -----------------------------------------------------------------------
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Api.Attributes;
-using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.Delta;
 using Nop.Plugin.Api.DTO.Errors;
 using Nop.Plugin.Api.DTO.ProductAttributes;
 using Nop.Plugin.Api.Helpers;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Plugin.Api.JSON.ActionResults;
 using Nop.Plugin.Api.JSON.Serializers;
 using Nop.Plugin.Api.ModelBinders;
