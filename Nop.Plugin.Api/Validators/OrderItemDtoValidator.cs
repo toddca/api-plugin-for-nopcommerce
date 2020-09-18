@@ -1,16 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
-using Nop.Plugin.Api.DTOs.OrderItems;
-using Nop.Plugin.Api.Helpers;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="OrderItemDtoValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Nop.Plugin.Api.DTO.OrderItems;
+using Nop.Plugin.Api.Helpers;
 
 namespace Nop.Plugin.Api.Validators
 {
     public class OrderItemDtoValidator : BaseDtoValidator<OrderItemDto>
     {
-
         #region Constructors
 
-        public OrderItemDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) : base(httpContextAccessor, jsonHelper, requestJsonDictionary)
+        public OrderItemDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) :
+            base(httpContextAccessor, jsonHelper, requestJsonDictionary)
         {
             SetProductIdRule();
             SetQuantityRule();
@@ -31,6 +38,5 @@ namespace Nop.Plugin.Api.Validators
         }
 
         #endregion
-
     }
 }

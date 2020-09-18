@@ -1,16 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
-using Nop.Plugin.Api.Helpers;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ManufacturerDtoValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System.Collections.Generic;
-using Nop.Plugin.Api.DTOs.Manufacturers;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
+using Nop.Plugin.Api.DTO.Manufacturers;
+using Nop.Plugin.Api.Helpers;
 
 namespace Nop.Plugin.Api.Validators
 {
+    [UsedImplicitly]
     public class ManufacturerDtoValidator : BaseDtoValidator<ManufacturerDto>
     {
-
         #region Constructors
 
-        public ManufacturerDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) : base(httpContextAccessor, jsonHelper, requestJsonDictionary)
+        public ManufacturerDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) :
+            base(httpContextAccessor, jsonHelper, requestJsonDictionary)
         {
             SetNameRule();
         }
@@ -25,6 +34,5 @@ namespace Nop.Plugin.Api.Validators
         }
 
         #endregion
-
     }
 }

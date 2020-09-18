@@ -1,20 +1,27 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Nop.Core.Domain.Orders;
-using Nop.Plugin.Api.DTOs.ShoppingCarts;
-using Nop.Plugin.Api.Helpers;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ShoppingCartItemDtoValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using Nop.Core.Domain.Orders;
+using Nop.Plugin.Api.DTO.ShoppingCarts;
+using Nop.Plugin.Api.Helpers;
 
 namespace Nop.Plugin.Api.Validators
 {
     public class ShoppingCartItemDtoValidator : BaseDtoValidator<ShoppingCartItemDto>
     {
-
         #region Constructors
 
-        public ShoppingCartItemDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) : base(httpContextAccessor, jsonHelper, requestJsonDictionary)
+        public ShoppingCartItemDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) :
+            base(httpContextAccessor, jsonHelper, requestJsonDictionary)
         {
             SetCustomerIdRule();
             SetProductIdRule();
@@ -52,8 +59,8 @@ namespace Nop.Plugin.Api.Validators
                     .WithMessage("Please provide a rental start date");
 
                 RuleFor(x => x.RentalEndDateUtc)
-                   .NotNull()
-                   .WithMessage("Please provide a rental end date");
+                    .NotNull()
+                    .WithMessage("Please provide a rental end date");
 
                 RuleFor(dto => dto)
                     .Must(dto => dto.RentalStartDateUtc < dto.RentalEndDateUtc)
@@ -64,8 +71,8 @@ namespace Nop.Plugin.Api.Validators
                     .WithMessage("Rental start date should be the future date");
 
                 RuleFor(dto => dto)
-                   .Must(dto => dto.RentalEndDateUtc > dto.CreatedOnUtc)
-                   .WithMessage("Rental end date should be the future date");
+                    .Must(dto => dto.RentalEndDateUtc > dto.CreatedOnUtc)
+                    .WithMessage("Rental end date should be the future date");
             }
         }
 
@@ -85,6 +92,5 @@ namespace Nop.Plugin.Api.Validators
         }
 
         #endregion
-
     }
 }

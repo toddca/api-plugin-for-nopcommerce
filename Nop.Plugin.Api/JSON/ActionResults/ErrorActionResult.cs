@@ -1,15 +1,21 @@
-﻿using System.Net;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ErrorActionResult.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Nop.Plugin.Api.JSON.ActionResults
 {
-    using System;
-    using System.IO;
-    using System.Text;
-    using Microsoft.AspNetCore.WebUtilities;
-
-    public class ErrorActionResult : IActionResult 
+    public class ErrorActionResult : IActionResult
     {
         private readonly string _jsonString;
         private readonly HttpStatusCode _statusCode;
@@ -19,15 +25,17 @@ namespace Nop.Plugin.Api.JSON.ActionResults
             _jsonString = jsonString;
             _statusCode = statusCode;
         }
-        
+
         public Task ExecuteResultAsync(ActionContext context)
         {
             if (context == null)
+            {
                 throw new ArgumentNullException(nameof(context));
+            }
 
             var response = context.HttpContext.Response;
 
-            response.StatusCode = (int)_statusCode;
+            response.StatusCode = (int) _statusCode;
             response.ContentType = "application/json";
 
             using (TextWriter writer = new HttpResponseStreamWriter(response.Body, Encoding.UTF8))

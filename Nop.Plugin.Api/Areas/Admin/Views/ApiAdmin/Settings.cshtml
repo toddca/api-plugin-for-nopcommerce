@@ -1,0 +1,122 @@
+﻿@using Nop.Plugin.Api.Infrastructure
+@model Nop.Plugin.Api.Areas.Admin.Models.ConfigurationModel
+
+@{
+    Layout = Constants.ViewNames.AdminLayout;
+
+    //page title
+    ViewBag.Title = T("Plugins.Api.Admin.Page.Settings.Title").Text;
+
+    //active menu item (system name)
+    Html.SetActiveMenuItemSystemName("Api-Settings-Menu");
+}
+
+<form asp-controller="ApiAdmin" asp-action="Settings" method="post">
+    <nop-antiforgery-token />
+    <div class="content-header clearfix">
+        <h1 class="pull-left">
+            @T("Plugins.Api.Admin.Page.Settings.Title")
+        </h1>
+        <div class="pull-right">
+            <button type="submit" name="save" class="btn bg-blue">
+                <i class="fa fa-floppy-o"></i>
+                @T("Admin.Common.Save")
+            </button>
+        </div>
+    </div>
+    
+    <div class="content" style="min-height: 0; padding-bottom: 0;">
+        <div class="form-horizontal">
+            @await Component.InvokeAsync("StoreScopeConfiguration")
+            @Html.ValidationSummary(false)
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <nop-override-store-checkbox asp-for="EnableApi_OverrideForStore" asp-input="EnableApi" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                                <nop-label asp-for="EnableApi" />
+                            </div>
+                            <div class="col-md-9">
+                                <nop-editor asp-for="EnableApi" />
+                                <span asp-validation-for="EnableApi"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="content">
+    <div class="form-horizontal">
+        <div class="panel-group">
+            <h3>Generate Token</h3>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <nop-label asp-for="Email" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="Email" />
+                            <span asp-validation-for="Email"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <nop-label asp-for="Password" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="Password" />
+                            <span asp-validation-for="Password"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-9">
+                            <button id="btnGenerateToken" type="button" name="save" class="btn bg-blue">
+                                <i class="fa fa-key"></i>
+                                @T("Forum.Submit")
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-9">
+                            <div id="token-area" style="display: none;">
+                                <textarea id="taToken" class="form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script language="javascript">
+    $(function() {
+        $("#btnGenerateToken").click(function() {
+            var email = $("#@(Html.IdFor(m => m.Email))").val();
+            var password = $("#@(Html.IdFor(m => m.Password))").val();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GenerateToken", "ApiAdmin")",
+                    contentType: "application/json",
+                    data: JSON.stringify({ Username: email, Password: password }),
+                    success: function(response) {
+                        if (response.error_description) {
+                            $("#token-area").slideUp();
+                            alert(response.error_description);
+                        } else {
+                            $("#token-area").slideDown();
+                            $("#taToken").val(response.access_token);
+                        }
+                    }
+                });
+        });
+    });
+</script>

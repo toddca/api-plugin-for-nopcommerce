@@ -1,0 +1,14 @@
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Presentation\Nop.Web\Plugins\Nop.Plugin.Api\Areas\Admin\Views\ApiAdmin\Settings.cshtml
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Presentation\Nop.Web\Plugins\Nop.Plugin.Api\Areas\Admin\Views\_ViewImports.cshtml
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Presentation\Nop.Web\Plugins\Nop.Plugin.Api\logo.jpg
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Presentation\Nop.Web\Plugins\Nop.Plugin.Api\plugin.json
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Presentation\Nop.Web\Plugins\Nop.Plugin.Api\Nop.Plugin.Api.deps.json
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Presentation\Nop.Web\Plugins\Nop.Plugin.Api\Nop.Plugin.Api.dll
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Presentation\Nop.Web\Plugins\Nop.Plugin.Api\Nop.Plugin.Api.pdb
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Plugins\Nop.Plugin.Api\obj\Release\netcoreapp2.2\Nop.Plugin.Api.csprojAssemblyReference.cache
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Plugins\Nop.Plugin.Api\obj\Release\netcoreapp2.2\Nop.Plugin.Api.csproj.CoreCompileInputs.cache
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Plugins\Nop.Plugin.Api\obj\Release\netcoreapp2.2\Nop.Plugin.Api.AssemblyInfoInputs.cache
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Plugins\Nop.Plugin.Api\obj\Release\netcoreapp2.2\Nop.Plugin.Api.AssemblyInfo.cs
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Plugins\Nop.Plugin.Api\obj\Release\netcoreapp2.2\Nop.Plugin.Api.csproj.CopyComplete
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Plugins\Nop.Plugin.Api\obj\Release\netcoreapp2.2\Nop.Plugin.Api.dll
+C:\Dev\Repos\MyPillow\src\LM\nopCommerce\Plugins\Nop.Plugin.Api\obj\Release\netcoreapp2.2\Nop.Plugin.Api.pdb

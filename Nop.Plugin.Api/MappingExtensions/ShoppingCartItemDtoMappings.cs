@@ -1,6 +1,13 @@
-﻿using Nop.Plugin.Api.AutoMapper;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ShoppingCartItemDtoMappings.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using Nop.Core.Domain.Orders;
-using Nop.Plugin.Api.DTOs.ShoppingCarts;
+using Nop.Plugin.Api.AutoMapper;
+using Nop.Plugin.Api.DTO.ShoppingCarts;
 
 namespace Nop.Plugin.Api.MappingExtensions
 {

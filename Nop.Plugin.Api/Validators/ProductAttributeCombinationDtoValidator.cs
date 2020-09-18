@@ -1,16 +1,29 @@
-﻿using Microsoft.AspNetCore.Http;
-using Nop.Plugin.Api.DTOs.Products;
-using Nop.Plugin.Api.Helpers;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ProductAttributeCombinationDtoValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System.Collections.Generic;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
+using Nop.Plugin.Api.DTO.Products;
+using Nop.Plugin.Api.Helpers;
 
 namespace Nop.Plugin.Api.Validators
 {
+    [UsedImplicitly]
     public class ProductAttributeCombinationDtoValidator : BaseDtoValidator<ProductAttributeCombinationDto>
     {
-
         #region Constructors
 
-        public ProductAttributeCombinationDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) : base(httpContextAccessor, jsonHelper, requestJsonDictionary)
+        public ProductAttributeCombinationDtoValidator(
+            IHttpContextAccessor httpContextAccessor,
+            IJsonHelper jsonHelper,
+            Dictionary<string, object> requestJsonDictionary) : base(httpContextAccessor,
+                                                                     jsonHelper,
+                                                                     requestJsonDictionary)
         {
             SetAttributesXmlRule();
             SetProductIdRule();
@@ -31,6 +44,5 @@ namespace Nop.Plugin.Api.Validators
         }
 
         #endregion
-
     }
 }

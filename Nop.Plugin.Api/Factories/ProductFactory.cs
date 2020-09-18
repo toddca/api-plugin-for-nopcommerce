@@ -1,4 +1,11 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ProductFactory.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Directory;
 using Nop.Services.Directory;
@@ -19,7 +26,7 @@ namespace Nop.Plugin.Api.Factories
         public Product Initialize()
         {
             var defaultProduct = new Product();
-            
+
             defaultProduct.Weight = _measureService.GetMeasureWeightById(_measureSettings.BaseWeightId).Ratio;
 
             defaultProduct.CreatedOnUtc = DateTime.UtcNow;
@@ -36,13 +43,13 @@ namespace Nop.Plugin.Api.Factories
             defaultProduct.NotifyAdminForQuantityBelow = 1;
             defaultProduct.OrderMinimumQuantity = 1;
             defaultProduct.OrderMaximumQuantity = 10000;
-            
+
             defaultProduct.UnlimitedDownloads = true;
             defaultProduct.IsShipEnabled = true;
             defaultProduct.AllowCustomerReviews = true;
             defaultProduct.Published = true;
             defaultProduct.VisibleIndividually = true;
-           
+
             return defaultProduct;
         }
     }

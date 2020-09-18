@@ -1,0 +1,472 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Plugins\\Nop.Plugin.Api\\Nop.Plugin.Api.csproj": {}
+  },
+  "projects": {
+    "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+      "version": "4.3.0",
+      "restore": {
+        "projectUniqueName": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj",
+        "projectName": "Nop.Core",
+        "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj",
+        "packagesPath": "C:\\Users\\Todd\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Todd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Autofac.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Humanizer": {
+              "target": "Package",
+              "version": "[2.8.11, )"
+            },
+            "Microsoft.AspNetCore.DataProtection.AzureKeyVault": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "Microsoft.AspNetCore.DataProtection.AzureStorage": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "Microsoft.AspNetCore.DataProtection.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
+            "Microsoft.Azure.Services.AppAuthentication": {
+              "target": "Package",
+              "version": "[1.4.0, )"
+            },
+            "MiniProfiler.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "RedLock.net": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "System.IO.FileSystem.AccessControl": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Data\\Nop.Data.csproj": {
+      "version": "4.3.0",
+      "restore": {
+        "projectUniqueName": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Data\\Nop.Data.csproj",
+        "projectName": "Nop.Data",
+        "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Data\\Nop.Data.csproj",
+        "packagesPath": "C:\\Users\\Todd\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Todd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+                "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "FluentMigrator": {
+              "target": "Package",
+              "version": "[3.2.6, )"
+            },
+            "FluentMigrator.Runner": {
+              "target": "Package",
+              "version": "[3.2.6, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.20, )"
+            },
+            "System.Net.NameResolution": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "linq2db": {
+              "target": "Package",
+              "version": "[2.9.8, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Services\\Nop.Services.csproj": {
+      "version": "4.3.0",
+      "restore": {
+        "projectUniqueName": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Services\\Nop.Services.csproj",
+        "projectName": "Nop.Services",
+        "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Services\\Nop.Services.csproj",
+        "packagesPath": "C:\\Users\\Todd\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Services\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Todd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+                "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj"
+              },
+              "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Data\\Nop.Data.csproj": {
+                "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Data\\Nop.Data.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[4.5.3.3, )"
+            },
+            "MailKit": {
+              "target": "Package",
+              "version": "[2.6.0, )"
+            },
+            "MaxMind.GeoIP2": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[1.0.0-rc0001, )"
+            },
+            "System.Linq.Dynamic.Core": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "System.ServiceModel.Http": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
+            "WindowsAzure.Storage": {
+              "target": "Package",
+              "version": "[9.3.3, )"
+            },
+            "iTextSharp.LGPLv2.Core": {
+              "target": "Package",
+              "version": "[1.6.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Plugins\\Nop.Plugin.Api\\Nop.Plugin.Api.csproj": {
+      "version": "0.0.1-local",
+      "restore": {
+        "projectUniqueName": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Plugins\\Nop.Plugin.Api\\Nop.Plugin.Api.csproj",
+        "projectName": "Nop.Plugin.Api",
+        "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Plugins\\Nop.Plugin.Api\\Nop.Plugin.Api.csproj",
+        "packagesPath": "C:\\Users\\Todd\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Plugins\\Nop.Plugin.Api\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Todd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+                "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj"
+              },
+              "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
+                "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "JetBrains.Annotations": {
+              "target": "Package",
+              "version": "[2020.1.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.8, )"
+            },
+            "Microsoft.AspNetCore.Rewrite": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
+      "version": "4.3.0",
+      "restore": {
+        "projectUniqueName": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj",
+        "projectName": "Nop.Web.Framework",
+        "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj",
+        "packagesPath": "C:\\Users\\Todd\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Presentation\\Nop.Web.Framework\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Todd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+                "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Core\\Nop.Core.csproj"
+              },
+              "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Data\\Nop.Data.csproj": {
+                "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Data\\Nop.Data.csproj"
+              },
+              "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Services\\Nop.Services.csproj": {
+                "projectPath": "C:\\Dev\\Repos\\LM\\NopCommerce\\src\\nopCommerce43\\Libraries\\Nop.Services\\Nop.Services.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "BundlerMinifier.Core": {
+              "target": "Package",
+              "version": "[3.2.447, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[8.6.2, )"
+            },
+            "WebMarkupMin.AspNetCore3": {
+              "target": "Package",
+              "version": "[2.8.2, )"
+            },
+            "WebMarkupMin.NUglify": {
+              "target": "Package",
+              "version": "[2.8.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

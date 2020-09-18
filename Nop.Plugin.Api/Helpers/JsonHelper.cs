@@ -1,9 +1,15 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="JsonHelper.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 using Nop.Services.Localization;
 
@@ -11,15 +17,6 @@ namespace Nop.Plugin.Api.Helpers
 {
     public class JsonHelper : IJsonHelper
     {
-
-        #region Private Fields
-
-        private readonly ILocalizationService _localizationService;
-
-        private readonly int _languageId;
-
-        #endregion
-
         #region Constructors
 
         public JsonHelper(ILanguageService languageService, ILocalizationService localizationService)
@@ -27,8 +24,18 @@ namespace Nop.Plugin.Api.Helpers
             _localizationService = localizationService;
 
             var language = languageService.GetAllLanguages().FirstOrDefault();
-            _languageId = language != null ? language.Id : 0;
+            _languageId = language != null
+                              ? language.Id
+                              : 0;
         }
+
+        #endregion
+
+        #region Private Fields
+
+        private readonly ILocalizationService _localizationService;
+
+        private readonly int _languageId;
 
         #endregion
 
@@ -101,7 +108,7 @@ namespace Nop.Plugin.Api.Helpers
                     return token.Select(ToObject).ToList();
 
                 default:
-                    return ((JValue)token).Value;
+                    return ((JValue) token).Value;
             }
         }
 
@@ -109,7 +116,11 @@ namespace Nop.Plugin.Api.Helpers
         {
             var result = "";
 
-            using (var streamReader = new StreamReader(stream, Encoding.UTF8, true, 1024, rewindStream))
+            using (var streamReader = new StreamReader(stream,
+                                                       Encoding.UTF8,
+                                                       true,
+                                                       1024,
+                                                       rewindStream))
             {
                 result = streamReader.ReadToEnd();
                 if (rewindStream)
@@ -122,6 +133,5 @@ namespace Nop.Plugin.Api.Helpers
         }
 
         #endregion
-
     }
 }

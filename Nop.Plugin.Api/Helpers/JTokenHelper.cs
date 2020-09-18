@@ -1,8 +1,15 @@
-﻿namespace Nop.Plugin.Api.Helpers
-{
-    using System.Collections.Generic;
-    using Newtonsoft.Json.Linq;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="JTokenHelper.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+
+namespace Nop.Plugin.Api.Helpers
+{
     public static class JTokenHelper
     {
         public static JToken RemoveEmptyChildrenAndFilterByFields(this JToken token, IList<string> jsonFields, int level = 1)
@@ -65,7 +72,7 @@
 
         private static bool IsEmptyOrDefault(this JToken token)
         {
-            return (token.Type == JTokenType.Array && !token.HasValues) || (token.Type == JTokenType.Object && !token.HasValues);
+            return token.Type == JTokenType.Array && !token.HasValues || token.Type == JTokenType.Object && !token.HasValues;
         }
     }
 }

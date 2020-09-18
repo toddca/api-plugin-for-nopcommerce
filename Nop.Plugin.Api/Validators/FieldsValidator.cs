@@ -1,4 +1,11 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="FieldsValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,17 +14,6 @@ namespace Nop.Plugin.Api.Validators
 {
     public class FieldsValidator : IFieldsValidator
     {
-        private static IEnumerable<string> GetPropertiesIntoList(string fields)
-        {
-            var properties = fields.ToLowerInvariant()
-                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => x.Trim())
-                .Distinct()
-                .ToList();
-
-            return properties;
-        }
-
         public Dictionary<string, bool> GetValidFields(string fields, Type type)
         {
             // This check ensures that the fields won't be null, because it can couse exception.
@@ -27,8 +23,8 @@ namespace Nop.Plugin.Api.Validators
             fields = fields.Replace("_", string.Empty);
 
             var validFields = new Dictionary<string, bool>();
-            var fieldsAsList = GetPropertiesIntoList(fields); 
-            
+            var fieldsAsList = GetPropertiesIntoList(fields);
+
             foreach (var field in fieldsAsList)
             {
                 var propertyExists = type.GetProperty(field, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance) != null;
@@ -40,6 +36,21 @@ namespace Nop.Plugin.Api.Validators
             }
 
             return validFields;
+        }
+
+        private static IEnumerable<string> GetPropertiesIntoList(string fields)
+        {
+            var properties = fields.ToLowerInvariant()
+                                   .Split(new[]
+                                          {
+                                              ','
+                                          },
+                                          StringSplitOptions.RemoveEmptyEntries)
+                                   .Select(x => x.Trim())
+                                   .Distinct()
+                                   .ToList();
+
+            return properties;
         }
     }
 }

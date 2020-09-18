@@ -1,7 +1,15 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="MappingHelper.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Nop.Core.Infrastructure;
@@ -15,14 +23,18 @@ namespace Nop.Plugin.Api.Helpers
         public void Merge(object source, object destination)
         {
             var sourcePropertyValuePairs = source.GetType()
-                .GetProperties()
-                .ToDictionary(property => property.Name, property => property.GetValue(source));
+                                                 .GetProperties()
+                                                 .ToDictionary(property => property.Name, property => property.GetValue(source));
 
-            SetValues(sourcePropertyValuePairs, destination, destination.GetType(),null);
+            SetValues(sourcePropertyValuePairs, destination, destination.GetType(), null);
         }
 
-        public void SetValues(Dictionary<string, object> propertyNameValuePairs, object objectToBeUpdated,
-            Type propertyType, Dictionary<object, object> objectPropertyNameValuePairs, bool handleComplexTypeCollections = false)
+        public void SetValues(
+            Dictionary<string, object> propertyNameValuePairs,
+            object objectToBeUpdated,
+            Type propertyType,
+            Dictionary<object, object> objectPropertyNameValuePairs,
+            bool handleComplexTypeCollections = false)
         {
             objectPropertyNameValuePairs?.Add(objectToBeUpdated, propertyNameValuePairs);
 
@@ -37,17 +49,21 @@ namespace Nop.Plugin.Api.Helpers
         {
             var converter = TypeDescriptor.GetConverter(objectProperty.PropertyType);
 
-            var propertyValueAsString = string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}", propertyValue);
+            var propertyValueAsString = string.Format(CultureInfo.InvariantCulture, "{0}", propertyValue);
 
-			if (converter.IsValid(propertyValueAsString))
-			{
-				var convertedValue = converter.ConvertFromInvariantString(propertyValueAsString);
-				
-				objectProperty.SetValue(objectToBeUpdated, convertedValue);
-			}
+            if (converter.IsValid(propertyValueAsString))
+            {
+                var convertedValue = converter.ConvertFromInvariantString(propertyValueAsString);
+
+                objectProperty.SetValue(objectToBeUpdated, convertedValue);
+            }
         }
 
-        private void SetValue(object objectToBeUpdated, KeyValuePair<string, object> propertyNameValuePair, Dictionary<object, object> objectPropertyNameValuePairs, bool handleComplexTypeCollections)
+        private void SetValue(
+            object objectToBeUpdated,
+            KeyValuePair<string, object> propertyNameValuePair,
+            Dictionary<object, object> objectPropertyNameValuePairs,
+            bool handleComplexTypeCollections)
         {
             var propertyName = propertyNameValuePair.Key;
             var propertyValue = propertyNameValuePair.Value;
@@ -57,7 +73,7 @@ namespace Nop.Plugin.Api.Helpers
             if (propertyToUpdate != null)
             {
                 // This case handles nested properties.
-                if (propertyValue != null && propertyValue is Dictionary<string, object>)
+                if (propertyValue is Dictionary<string, object>)
                 {
                     var valueToUpdate = propertyToUpdate.GetValue(objectToBeUpdated);
 
@@ -65,8 +81,8 @@ namespace Nop.Plugin.Api.Helpers
                     {
                         // Check if there is registered factory for this type.
                         var factoryType = typeof(IFactory<>);
-                        var factoryTypeForCurrentProperty = factoryType.MakeGenericType(new Type[] { propertyToUpdate.PropertyType });
-                        var initializerFactory = ((NopEngine)EngineContext.Current).ServiceProvider.GetService(factoryTypeForCurrentProperty);
+                        var factoryTypeForCurrentProperty = factoryType.MakeGenericType(propertyToUpdate.PropertyType);
+                        var initializerFactory = ((NopEngine) EngineContext.Current).ServiceProvider.GetService(factoryTypeForCurrentProperty);
 
                         if (initializerFactory != null)
                         {
@@ -83,16 +99,16 @@ namespace Nop.Plugin.Api.Helpers
                     }
 
                     // We need to use GetValue method to get the actual instance of the jsonProperty. objectProperty is the jsonProperty info.
-                    SetValues((Dictionary<string, object>)propertyValue, valueToUpdate,
-                        propertyToUpdate.PropertyType, objectPropertyNameValuePairs);
+                    SetValues((Dictionary<string, object>) propertyValue,
+                              valueToUpdate,
+                              propertyToUpdate.PropertyType,
+                              objectPropertyNameValuePairs);
                     // We expect the nested properties to be classes which are refrence types.
                     return;
                 }
-                // This case hadles collections.
-                else if (propertyValue != null && propertyValue is ICollection<object>)
+                // This case handles collections.
+                if (propertyValue is ICollection<object> propertyValueAsCollection)
                 {
-                    var propertyValueAsCollection = propertyValue as ICollection<object>;
-
                     var collectionElementsType = propertyToUpdate.PropertyType.GetGenericArguments()[0];
                     var collection = propertyToUpdate.GetValue(objectToBeUpdated);
 
@@ -125,8 +141,10 @@ namespace Nop.Plugin.Api.Helpers
                             if (handleComplexTypeCollections)
                             {
                                 AddOrUpdateComplexItemInCollection(item as Dictionary<string, object>,
-                                    collection as IList,
-                                    collectionElementsType, objectPropertyNameValuePairs, handleComplexTypeCollections);
+                                                                   collection as IList,
+                                                                   collectionElementsType,
+                                                                   objectPropertyNameValuePairs,
+                                                                   handleComplexTypeCollections);
                             }
                         }
                         else
@@ -138,7 +156,7 @@ namespace Nop.Plugin.Api.Helpers
                     return;
                 }
 
-                // This is where the new value is beeing set to the object jsonProperty using the SetValue function part of System.Reflection.
+                // This is where the new value is being set to the object jsonProperty using the SetValue function part of System.Reflection.
                 if (propertyValue == null)
                 {
                     propertyToUpdate.SetValue(objectToBeUpdated, null);
@@ -155,7 +173,7 @@ namespace Nop.Plugin.Api.Helpers
             }
         }
 
-        private void AddBaseItemInCollection(object newItem, IList collection, Type collectionElementsType)
+        private static void AddBaseItemInCollection(object newItem, IList collection, Type collectionElementsType)
         {
             var converter = TypeDescriptor.GetConverter(collectionElementsType);
 
@@ -167,8 +185,12 @@ namespace Nop.Plugin.Api.Helpers
             }
         }
 
-        private void AddOrUpdateComplexItemInCollection(Dictionary<string, object> newProperties, IList collection, Type collectionElementsType,
-            Dictionary<object, object> objectPropertyNameValuePairs, bool handleComplexTypeCollections)
+        private void AddOrUpdateComplexItemInCollection(
+            Dictionary<string, object> newProperties,
+            IList collection,
+            Type collectionElementsType,
+            Dictionary<object, object> objectPropertyNameValuePairs,
+            bool handleComplexTypeCollections)
         {
             if (newProperties.ContainsKey("Id"))
             {
@@ -181,9 +203,10 @@ namespace Nop.Plugin.Api.Helpers
                 foreach (var item in collection)
                 {
                     if (int.Parse(item.GetType()
-                        .GetProperty("Id", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)
-                        .GetValue(item)
-                        .ToString()) == id)
+                                      .GetProperty("Id", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)
+                                      .GetValue(item)
+                                      .ToString()) ==
+                        id)
                     {
                         itemToBeUpdated = item;
                         break;
@@ -193,22 +216,39 @@ namespace Nop.Plugin.Api.Helpers
                 if (itemToBeUpdated == null)
                 {
                     // We should create a new item and put it in the collection.
-                    AddNewItemInCollection(newProperties, collection, collectionElementsType, objectPropertyNameValuePairs, handleComplexTypeCollections);
+                    AddNewItemInCollection(newProperties,
+                                           collection,
+                                           collectionElementsType,
+                                           objectPropertyNameValuePairs,
+                                           handleComplexTypeCollections);
                 }
                 else
                 {
                     // We should update the existing element.
-                    SetValues(newProperties, itemToBeUpdated, collectionElementsType, objectPropertyNameValuePairs, handleComplexTypeCollections);
+                    SetValues(newProperties,
+                              itemToBeUpdated,
+                              collectionElementsType,
+                              objectPropertyNameValuePairs,
+                              handleComplexTypeCollections);
                 }
             }
             // It is a new item.
             else
             {
-                AddNewItemInCollection(newProperties, collection, collectionElementsType, objectPropertyNameValuePairs, handleComplexTypeCollections);
+                AddNewItemInCollection(newProperties,
+                                       collection,
+                                       collectionElementsType,
+                                       objectPropertyNameValuePairs,
+                                       handleComplexTypeCollections);
             }
         }
 
-        private void AddNewItemInCollection(Dictionary<string, object> newProperties, IList collection, Type collectionElementsType,Dictionary<object,object> objectPropertyNameValuePairs, bool handleComplexTypeCollections)
+        private void AddNewItemInCollection(
+            Dictionary<string, object> newProperties,
+            IList collection,
+            Type collectionElementsType,
+            Dictionary<object, object> objectPropertyNameValuePairs,
+            bool handleComplexTypeCollections)
         {
             var newInstance = Activator.CreateInstance(collectionElementsType);
 
@@ -216,12 +256,16 @@ namespace Nop.Plugin.Api.Helpers
 
             SetEveryDatePropertyThatIsNotSetToDateTimeUtcNow(newProperties, properties);
 
-            SetValues(newProperties, newInstance, collectionElementsType, objectPropertyNameValuePairs, handleComplexTypeCollections);
+            SetValues(newProperties,
+                      newInstance,
+                      collectionElementsType,
+                      objectPropertyNameValuePairs,
+                      handleComplexTypeCollections);
 
             collection.Add(newInstance);
         }
 
-        private IList CreateEmptyList(Type listItemType)
+        private static IList CreateEmptyList(Type listItemType)
         {
             var listType = typeof(List<>);
             var constructedListType = listType.MakeGenericType(listItemType);
@@ -231,7 +275,7 @@ namespace Nop.Plugin.Api.Helpers
         }
 
         // We need this method, because the default value of DateTime is not in the sql server DateTime range and we will get an exception if we use it.
-        private void SetEveryDatePropertyThatIsNotSetToDateTimeUtcNow(Dictionary<string, object> newProperties, PropertyInfo[] properties)
+        private static void SetEveryDatePropertyThatIsNotSetToDateTimeUtcNow(Dictionary<string, object> newProperties, PropertyInfo[] properties)
         {
             foreach (var property in properties)
             {

@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ICustomerRolesHelper.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using Nop.Core.Domain.Customers;
 
 namespace Nop.Plugin.Api.Helpers

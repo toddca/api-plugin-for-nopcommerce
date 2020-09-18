@@ -1,21 +1,29 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="CategoryApiService.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
-using Nop.Plugin.Api.Constants;
+using Nop.Data;
 using Nop.Plugin.Api.DataStructures;
+using Nop.Plugin.Api.Infrastructure;
 using Nop.Services.Stores;
 
 namespace Nop.Plugin.Api.Services
 {
     public class CategoryApiService : ICategoryApiService
     {
-        private readonly IStoreMappingService _storeMappingService;
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<ProductCategory> _productCategoryMappingRepository;
+        private readonly IStoreMappingService _storeMappingService;
 
-        public CategoryApiService(IRepository<Category> categoryRepository,
+        public CategoryApiService(
+            IRepository<Category> categoryRepository,
             IRepository<ProductCategory> productCategoryMappingRepository,
             IStoreMappingService storeMappingService)
         {
@@ -24,13 +32,25 @@ namespace Nop.Plugin.Api.Services
             _storeMappingService = storeMappingService;
         }
 
-        public IList<Category> GetCategories(IList<int> ids = null,
-            DateTime? createdAtMin = null, DateTime? createdAtMax = null, DateTime? updatedAtMin = null, DateTime? updatedAtMax = null,
-            int limit = Configurations.DefaultLimit, int page = Configurations.DefaultPageValue, int sinceId = Configurations.DefaultSinceId, 
+        public IList<Category> GetCategories(
+            IList<int> ids = null,
+            DateTime? createdAtMin = null,
+            DateTime? createdAtMax = null,
+            DateTime? updatedAtMin = null,
+            DateTime? updatedAtMax = null,
+            int limit = Constants.Configurations.DefaultLimit,
+            int page = Constants.Configurations.DefaultPageValue,
+            int sinceId = Constants.Configurations.DefaultSinceId,
             int? productId = null,
             bool? publishedStatus = null)
         {
-            var query = GetCategoriesQuery(createdAtMin, createdAtMax, updatedAtMin, updatedAtMax, publishedStatus, productId, ids);
+            var query = GetCategoriesQuery(createdAtMin,
+                                           createdAtMax,
+                                           updatedAtMin,
+                                           updatedAtMax,
+                                           publishedStatus,
+                                           productId,
+                                           ids);
 
 
             if (sinceId > 0)
@@ -44,26 +64,41 @@ namespace Nop.Plugin.Api.Services
         public Category GetCategoryById(int id)
         {
             if (id <= 0)
+            {
                 return null;
+            }
 
             var category = _categoryRepository.Table.FirstOrDefault(cat => cat.Id == id && !cat.Deleted);
 
             return category;
         }
 
-        public int GetCategoriesCount(DateTime? createdAtMin = null, DateTime? createdAtMax = null,
-            DateTime? updatedAtMin = null, DateTime? updatedAtMax = null,
-            bool? publishedStatus = null, int? productId = null)
+        public int GetCategoriesCount(
+            DateTime? createdAtMin = null,
+            DateTime? createdAtMax = null,
+            DateTime? updatedAtMin = null,
+            DateTime? updatedAtMax = null,
+            bool? publishedStatus = null,
+            int? productId = null)
         {
-            var query = GetCategoriesQuery(createdAtMin, createdAtMax, updatedAtMin, updatedAtMax,
-                                           publishedStatus, productId);
+            var query = GetCategoriesQuery(createdAtMin,
+                                           createdAtMax,
+                                           updatedAtMin,
+                                           updatedAtMax,
+                                           publishedStatus,
+                                           productId);
 
             return query.Count(c => _storeMappingService.Authorize(c));
         }
 
         private IQueryable<Category> GetCategoriesQuery(
-            DateTime? createdAtMin = null, DateTime? createdAtMax = null, DateTime? updatedAtMin = null, DateTime? updatedAtMax = null,
-            bool? publishedStatus = null, int? productId = null, IList<int> ids = null)
+            DateTime? createdAtMin = null,
+            DateTime? createdAtMax = null,
+            DateTime? updatedAtMin = null,
+            DateTime? updatedAtMax = null,
+            bool? publishedStatus = null,
+            int? productId = null,
+            IList<int> ids = null)
         {
             var query = _categoryRepository.Table;
 
@@ -86,7 +121,6 @@ namespace Nop.Plugin.Api.Services
 
             if (createdAtMax != null)
             {
-
                 query = query.Where(c => c.CreatedOnUtc < createdAtMax.Value);
             }
 

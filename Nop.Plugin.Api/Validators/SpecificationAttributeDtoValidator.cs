@@ -1,13 +1,22 @@
-﻿using FluentValidation;
-using Nop.Plugin.Api.DTOs.SpecificationAttributes;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="SpecificationAttributeDtoValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
+using FluentValidation;
+using JetBrains.Annotations;
+using Nop.Plugin.Api.DTO.SpecificationAttributes;
 
 namespace Nop.Plugin.Api.Validators
 {
+    [UsedImplicitly]
     public class SpecificationAttributeDtoValidator : AbstractValidator<SpecificationAttributeDto>
     {
-        public SpecificationAttributeDtoValidator(string httpMethod, Dictionary<string, object> passedPropertyValuePaires)
+        public SpecificationAttributeDtoValidator(string httpMethod, Dictionary<string, object> passedPropertyValuePairs)
         {
             if (string.IsNullOrEmpty(httpMethod) || httpMethod.Equals("post", StringComparison.InvariantCultureIgnoreCase))
             {

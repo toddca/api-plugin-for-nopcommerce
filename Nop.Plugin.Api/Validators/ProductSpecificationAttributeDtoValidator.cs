@@ -1,15 +1,24 @@
-﻿using FluentValidation;
-using Nop.Core.Domain.Catalog;
-using Nop.Plugin.Api.DTOs.SpecificationAttributes;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ProductSpecificationAttributeDtoValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation;
+using JetBrains.Annotations;
+using Nop.Core.Domain.Catalog;
+using Nop.Plugin.Api.DTO.SpecificationAttributes;
 
 namespace Nop.Plugin.Api.Validators
 {
+    [UsedImplicitly]
     public class ProductSpecificationAttributeDtoValidator : AbstractValidator<ProductSpecificationAttributeDto>
     {
-        public ProductSpecificationAttributeDtoValidator(string httpMethod, Dictionary<string, object> passedPropertyValuePaires)
+        public ProductSpecificationAttributeDtoValidator(string httpMethod, Dictionary<string, object> passedPropertyValuePairs)
         {
             if (string.IsNullOrEmpty(httpMethod) || httpMethod.Equals("post", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -19,7 +28,7 @@ namespace Nop.Plugin.Api.Validators
                 ApplyProductIdRule();
                 ApplyAttributeTypeIdRule();
 
-                if (passedPropertyValuePaires.ContainsKey("specification_attribute_option_id"))
+                if (passedPropertyValuePairs.ContainsKey("specification_attribute_option_id"))
                 {
                     ApplySpecificationAttributeOptoinIdRule();
                 }
@@ -29,17 +38,17 @@ namespace Nop.Plugin.Api.Validators
                 //apply "update" rules
                 RuleFor(x => x.Id).GreaterThan(0).WithMessage("invalid id");
 
-                if (passedPropertyValuePaires.ContainsKey("product_id"))
+                if (passedPropertyValuePairs.ContainsKey("product_id"))
                 {
                     ApplyProductIdRule();
                 }
 
-                if (passedPropertyValuePaires.ContainsKey("attribute_type_id"))
+                if (passedPropertyValuePairs.ContainsKey("attribute_type_id"))
                 {
                     ApplyAttributeTypeIdRule();
                 }
 
-                if (passedPropertyValuePaires.ContainsKey("specification_attribute_option_id"))
+                if (passedPropertyValuePairs.ContainsKey("specification_attribute_option_id"))
                 {
                     ApplySpecificationAttributeOptoinIdRule();
                 }
@@ -53,8 +62,10 @@ namespace Nop.Plugin.Api.Validators
 
         private void ApplyAttributeTypeIdRule()
         {
-            var specificationAttributeTypes = (SpecificationAttributeType[])Enum.GetValues(typeof(SpecificationAttributeType));
-            RuleFor(x => x.AttributeTypeId).InclusiveBetween((int)specificationAttributeTypes.First(), (int)specificationAttributeTypes.Last()).WithMessage("invalid attribute type id");
+            var specificationAttributeTypes = (SpecificationAttributeType[]) Enum.GetValues(typeof(SpecificationAttributeType));
+            RuleFor(x => x.AttributeTypeId)
+                .InclusiveBetween((int) specificationAttributeTypes.First(), (int) specificationAttributeTypes.Last())
+                .WithMessage("invalid attribute type id");
         }
 
         private void ApplySpecificationAttributeOptoinIdRule()

@@ -1,9 +1,16 @@
-﻿namespace Nop.Plugin.Api.Authorization.Requirements
-{
-    using Microsoft.AspNetCore.Authorization;
-    using Nop.Core.Infrastructure;
-    using Nop.Plugin.Api.Domain;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ActiveApiPluginRequirement.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
 
+using Microsoft.AspNetCore.Authorization;
+using Nop.Core.Infrastructure;
+using Nop.Plugin.Api.Domain;
+
+namespace Nop.Plugin.Api.Authorization.Requirements
+{
     public class ActiveApiPluginRequirement : IAuthorizationRequirement
     {
         public bool IsActive()

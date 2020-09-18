@@ -1,4 +1,11 @@
-﻿using AutoMapper;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="AutoMapperApiConfiguration.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using AutoMapper;
 using AutoMapper.Configuration;
 
 namespace Nop.Plugin.Api.AutoMapper
@@ -9,8 +16,7 @@ namespace Nop.Plugin.Api.AutoMapper
         private static IMapper s_mapper;
         private static readonly object s_mapperLockObject = new object();
 
-        public static MapperConfigurationExpression MapperConfigurationExpression => s_mapperConfigurationExpression ??
-                                                                                     (s_mapperConfigurationExpression = new MapperConfigurationExpression());
+        public static MapperConfigurationExpression MapperConfigurationExpression => s_mapperConfigurationExpression ??= new MapperConfigurationExpression();
 
         public static IMapper Mapper
         {

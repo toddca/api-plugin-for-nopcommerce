@@ -1,11 +1,22 @@
-﻿using System.Collections.Generic;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="BaseApiController.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nop.Core;
 using Nop.Core.Domain.Security;
 using Nop.Core.Domain.Stores;
-using Nop.Plugin.Api.DTOs.Errors;
+using Nop.Plugin.Api.DTO.Errors;
 using Nop.Plugin.Api.JSON.ActionResults;
+using Nop.Plugin.Api.JSON.Serializers;
 using Nop.Services.Customers;
 using Nop.Services.Discounts;
 using Nop.Services.Localization;
@@ -13,31 +24,30 @@ using Nop.Services.Logging;
 using Nop.Services.Media;
 using Nop.Services.Security;
 using Nop.Services.Stores;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Nop.Plugin.Api.Controllers
 {
-    using JSON.Serializers;
-
+    [Authorize(Policy = JwtBearerDefaults.AuthenticationScheme, AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BaseApiController : Controller
     {
-        protected readonly IJsonFieldsSerializer JsonFieldsSerializer;
         protected readonly IAclService AclService;
-        protected readonly ICustomerService CustomerService;
-        protected readonly IStoreMappingService StoreMappingService;
-        protected readonly IStoreService StoreService;
-        protected readonly IDiscountService DiscountService;
         protected readonly ICustomerActivityService CustomerActivityService;
+        protected readonly ICustomerService CustomerService;
+        protected readonly IDiscountService DiscountService;
+        protected readonly IJsonFieldsSerializer JsonFieldsSerializer;
         protected readonly ILocalizationService LocalizationService;
         protected readonly IPictureService PictureService;
+        protected readonly IStoreMappingService StoreMappingService;
+        protected readonly IStoreService StoreService;
 
-        public BaseApiController(IJsonFieldsSerializer jsonFieldsSerializer, 
-            IAclService aclService, 
-            ICustomerService customerService, 
-            IStoreMappingService storeMappingService, 
-            IStoreService storeService, 
-            IDiscountService discountService, 
-            ICustomerActivityService customerActivityService, 
+        public BaseApiController(
+            IJsonFieldsSerializer jsonFieldsSerializer,
+            IAclService aclService,
+            ICustomerService customerService,
+            IStoreMappingService storeMappingService,
+            IStoreService storeService,
+            IDiscountService discountService,
+            ICustomerActivityService customerActivityService,
             ILocalizationService localizationService,
             IPictureService pictureService)
         {
@@ -52,16 +62,19 @@ namespace Nop.Plugin.Api.Controllers
             PictureService = pictureService;
         }
 
-        protected IActionResult Error(HttpStatusCode statusCode = (HttpStatusCode)422, string propertyKey = "", string errorMessage = "")
+        protected IActionResult Error(HttpStatusCode statusCode = (HttpStatusCode) 422, string propertyKey = "", string errorMessage = "")
         {
             var errors = new Dictionary<string, List<string>>();
 
             if (!string.IsNullOrEmpty(errorMessage) && !string.IsNullOrEmpty(propertyKey))
             {
-                var errorsList = new List<string>() {errorMessage};
+                var errorsList = new List<string>
+                                 {
+                                     errorMessage
+                                 };
                 errors.Add(propertyKey, errorsList);
             }
-            
+
             foreach (var item in ModelState)
             {
                 var errorMessages = item.Value.Errors.Select(x => x.ErrorMessage);
@@ -69,7 +82,7 @@ namespace Nop.Plugin.Api.Controllers
                 var validErrorMessages = new List<string>();
 
                 validErrorMessages.AddRange(errorMessages.Where(message => !string.IsNullOrEmpty(message)));
-                
+
                 if (validErrorMessages.Count > 0)
                 {
                     if (errors.ContainsKey(item.Key))
@@ -83,17 +96,17 @@ namespace Nop.Plugin.Api.Controllers
                 }
             }
 
-            var errorsRootObject = new ErrorsRootObject()
-            {
-                Errors = errors
-            };
+            var errorsRootObject = new ErrorsRootObject
+                                   {
+                                       Errors = errors
+                                   };
 
             var errorsJson = JsonFieldsSerializer.Serialize(errorsRootObject, null);
 
             return new ErrorActionResult(errorsJson, statusCode);
         }
 
-        protected void UpdateAclRoles<TEntity>(TEntity entity, List<int> passedRoleIds) where TEntity: BaseEntity, IAclSupported
+        protected void UpdateAclRoles<TEntity>(TEntity entity, List<int> passedRoleIds) where TEntity : BaseEntity, IAclSupported
         {
             if (passedRoleIds == null)
             {
@@ -110,22 +123,28 @@ namespace Nop.Plugin.Api.Controllers
                 {
                     //new role
                     if (existingAclRecords.Count(acl => acl.CustomerRoleId == customerRole.Id) == 0)
+                    {
                         AclService.InsertAclRecord(entity, customerRole.Id);
+                    }
                 }
                 else
                 {
                     //remove role
                     var aclRecordToDelete = existingAclRecords.FirstOrDefault(acl => acl.CustomerRoleId == customerRole.Id);
                     if (aclRecordToDelete != null)
+                    {
                         AclService.DeleteAclRecord(aclRecordToDelete);
+                    }
                 }
             }
         }
 
         protected void UpdateStoreMappings<TEntity>(TEntity entity, List<int> passedStoreIds) where TEntity : BaseEntity, IStoreMappingSupported
         {
-            if(passedStoreIds == null)
+            if (passedStoreIds == null)
+            {
                 return;
+            }
 
             entity.LimitedToStores = passedStoreIds.Any();
 
@@ -137,14 +156,18 @@ namespace Nop.Plugin.Api.Controllers
                 {
                     //new store
                     if (existingStoreMappings.Count(sm => sm.StoreId == store.Id) == 0)
+                    {
                         StoreMappingService.InsertStoreMapping(entity, store.Id);
+                    }
                 }
                 else
                 {
                     //remove store
                     var storeMappingToDelete = existingStoreMappings.FirstOrDefault(sm => sm.StoreId == store.Id);
                     if (storeMappingToDelete != null)
+                    {
                         StoreMappingService.DeleteStoreMapping(storeMappingToDelete);
+                    }
                 }
             }
         }

@@ -1,4 +1,11 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ProductTypeValidationAttribute.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using Nop.Core.Domain.Catalog;
 
@@ -13,13 +20,15 @@ namespace Nop.Plugin.Api.Attributes
             // Product Type is not required so it could be null
             // and there is nothing to validate in this case
             if (instance == null)
+            {
                 return;
+            }
 
             var isDefined = Enum.IsDefined(typeof(ProductType), instance);
 
             if (!isDefined)
-            { 
-                _errors.Add("ProductType","Invalid product type");
+            {
+                _errors.Add("ProductType", "Invalid product type");
             }
         }
 

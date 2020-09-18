@@ -1,12 +1,19 @@
-﻿namespace Nop.Plugin.Api.JSON.Serializers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Newtonsoft.Json.Linq;
-    using Nop.Plugin.Api.DTOs;
-    using Nop.Plugin.Api.Helpers;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="JsonFieldsSerializer.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using Nop.Plugin.Api.DTO;
+using Nop.Plugin.Api.Helpers;
+
+namespace Nop.Plugin.Api.JSON.Serializers
+{
     public class JsonFieldsSerializer : IJsonFieldsSerializer
     {
         public string Serialize(ISerializableObject objectToSerialize, string jsonFields)
@@ -50,10 +57,14 @@
         private IList<string> GetPropertiesIntoList(string fields)
         {
             IList<string> properties = fields.ToLowerInvariant()
-                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => x.Trim())
-                .Distinct()
-                .ToList();
+                                             .Split(new[]
+                                                    {
+                                                        ','
+                                                    },
+                                                    StringSplitOptions.RemoveEmptyEntries)
+                                             .Select(x => x.Trim())
+                                             .Distinct()
+                                             .ToList();
 
             return properties;
         }

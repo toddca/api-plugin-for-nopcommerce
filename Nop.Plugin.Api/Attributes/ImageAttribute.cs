@@ -1,20 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using Nop.Plugin.Api.DTOs.Images;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ImageAttribute.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using Nop.Core.Infrastructure;
+using Nop.Plugin.Api.DTO.Images;
 using Nop.Services.Media;
 
 namespace Nop.Plugin.Api.Attributes
 {
     public class ImageValidationAttribute : BaseValidationAttribute
     {
-        private Dictionary<string, string> _errors;
+        private readonly Dictionary<string, string> _errors;
         private readonly IPictureService _pictureService;
 
         public ImageValidationAttribute()
@@ -29,7 +36,7 @@ namespace Nop.Plugin.Api.Attributes
 
             var imageSrcSet = imageDto != null && !string.IsNullOrEmpty(imageDto.Src);
             var imageAttachmentSet = imageDto != null && !string.IsNullOrEmpty(imageDto.Attachment);
-            
+
             if (imageSrcSet || imageAttachmentSet)
             {
                 byte[] imageBytes = null;
@@ -55,8 +62,9 @@ namespace Nop.Plugin.Api.Attributes
 
                         if (_errors.Count == 0)
                         {
-                            ConvertAttachmentToByteArray(imageDto.Attachment, ref imageBytes,
-                                ref mimeType);
+                            ConvertAttachmentToByteArray(imageDto.Attachment,
+                                                         ref imageBytes,
+                                                         ref mimeType);
                         }
                     }
                 }
@@ -84,14 +92,14 @@ namespace Nop.Plugin.Api.Attributes
             if (imageSrcSet &&
                 imageAttachmentSet)
             {
-                var key = string.Format("{0} type", "image");
-                _errors.Add(key, "Image src and Attachment are both set");
+                const string Key = "image type";
+                _errors.Add(Key, "Image src and Attachment are both set");
             }
         }
 
         private void DownloadFromSrc(string imageSrc, ref byte[] imageBytes, ref string mimeType)
         {
-            var key = string.Format("{0} type", "image");
+            const string Key = "image type";
             // TODO: discuss if we need our own web client so we can set a custom tmeout - this one's timeout is 100 sec.
             var client = new WebClient();
 
@@ -103,14 +111,14 @@ namespace Nop.Plugin.Api.Attributes
 
                 if (imageBytes == null)
                 {
-                    _errors.Add(key, "src is invalid");
+                    _errors.Add(Key, "src is invalid");
                 }
             }
             catch (Exception ex)
             {
-                var message = string.Format("{0} - {1}", "src is invalid", ex.Message);
+                var message = $"{"src is invalid"} - {ex.Message}";
 
-                _errors.Add(key, message);
+                _errors.Add(Key, message);
             }
         }
 
@@ -121,12 +129,12 @@ namespace Nop.Plugin.Api.Attributes
             var isMatch = validBase64Pattern.IsMatch(attachment);
             if (!isMatch)
             {
-                var key = string.Format("{0} type", "image");
-                _errors.Add(key, "attachment format is invalid");
+                const string Key = "image type";
+                _errors.Add(Key, "attachment format is invalid");
             }
         }
 
-        private void ConvertAttachmentToByteArray(string attachment, ref byte[] imageBytes, ref string mimeType)
+        private static void ConvertAttachmentToByteArray(string attachment, ref byte[] imageBytes, ref string mimeType)
         {
             imageBytes = Convert.FromBase64String(attachment);
             mimeType = GetMimeTypeFromByteArray(imageBytes);
@@ -151,8 +159,8 @@ namespace Nop.Plugin.Api.Attributes
                 }
                 catch (Exception ex)
                 {
-                    var key = string.Format("{0} invalid", "image");
-                    var message = string.Format("{0} - {1}", "source is invalid", ex.Message);
+                    var key = "image invalid";
+                    var message = $"source is invalid - {ex.Message}";
 
                     _errors.Add(key, message);
                 }
@@ -160,7 +168,7 @@ namespace Nop.Plugin.Api.Attributes
 
             if (imageBytes == null)
             {
-                var key = string.Format("{0} invalid", "image");
+                var key = "image invalid";
                 var message = "You have provided an invalid image source/attachment";
 
                 _errors.Add(key, message);

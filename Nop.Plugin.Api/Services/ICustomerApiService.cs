@@ -1,8 +1,15 @@
-﻿using System;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="ICustomerApiService.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using Nop.Core.Domain.Customers;
-using Nop.Plugin.Api.Constants;
-using Nop.Plugin.Api.DTOs.Customers;
+using Nop.Plugin.Api.DTO.Customers;
+using Nop.Plugin.Api.Infrastructure;
 
 namespace Nop.Plugin.Api.Services
 {
@@ -14,11 +21,18 @@ namespace Nop.Plugin.Api.Services
 
         Customer GetCustomerEntityById(int id);
 
-        IList<CustomerDto> GetCustomersDtos(DateTime? createdAtMin = null, DateTime? createdAtMax = null,
-            int limit = Configurations.DefaultLimit, int page = Configurations.DefaultPageValue, int sinceId = Configurations.DefaultSinceId);
-        
-        IList<CustomerDto> Search(string query = "", string order = Configurations.DefaultOrder, 
-            int page = Configurations.DefaultPageValue, int limit = Configurations.DefaultLimit);
+        IList<CustomerDto> GetCustomersDtos(
+            DateTime? createdAtMin = null,
+            DateTime? createdAtMax = null,
+            int limit = Constants.Configurations.DefaultLimit,
+            int page = Constants.Configurations.DefaultPageValue,
+            int sinceId = Constants.Configurations.DefaultSinceId);
+
+        IList<CustomerDto> Search(
+            string query = "",
+            string order = Constants.Configurations.DefaultOrder,
+            int page = Constants.Configurations.DefaultPageValue,
+            int limit = Constants.Configurations.DefaultLimit);
 
         Dictionary<string, string> GetFirstAndLastNameByCustomerId(int customerId);
     }

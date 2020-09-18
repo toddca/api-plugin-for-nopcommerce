@@ -1,13 +1,22 @@
-﻿using FluentValidation;
-using Nop.Plugin.Api.DTOs.SpecificationAttributes;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="SpecificationAttributeOptionDtoValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
+using FluentValidation;
+using JetBrains.Annotations;
+using Nop.Plugin.Api.DTO.SpecificationAttributes;
 
 namespace Nop.Plugin.Api.Validators
 {
+    [UsedImplicitly]
     public class SpecificationAttributeOptionDtoValidator : AbstractValidator<SpecificationAttributeOptionDto>
     {
-        public SpecificationAttributeOptionDtoValidator(string httpMethod, Dictionary<string, object> passedPropertyValuePaires)
+        public SpecificationAttributeOptionDtoValidator(string httpMethod, Dictionary<string, object> passedPropertyValuePairs)
         {
             if (string.IsNullOrEmpty(httpMethod) || httpMethod.Equals("post", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -22,12 +31,12 @@ namespace Nop.Plugin.Api.Validators
                 //apply "update" rules
                 RuleFor(x => x.Id).GreaterThan(0).WithMessage("invalid id");
 
-                if (passedPropertyValuePaires.ContainsKey("name"))
+                if (passedPropertyValuePairs.ContainsKey("name"))
                 {
                     ApplyNameRule();
                 }
 
-                if (passedPropertyValuePaires.ContainsKey("specification_attribute_id"))
+                if (passedPropertyValuePairs.ContainsKey("specification_attribute_id"))
                 {
                     ApplySpecificationAttributeIdRule();
                 }

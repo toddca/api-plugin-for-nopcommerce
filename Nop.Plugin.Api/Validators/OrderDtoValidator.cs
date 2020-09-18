@@ -1,18 +1,27 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Nop.Plugin.Api.DTOs.Orders;
-using Nop.Plugin.Api.Helpers;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="OrderDtoValidator.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System.Collections.Generic;
 using System.Net.Http;
+using FluentValidation;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
+using Nop.Plugin.Api.DTO.Orders;
+using Nop.Plugin.Api.Helpers;
 
 namespace Nop.Plugin.Api.Validators
 {
+    [UsedImplicitly]
     public class OrderDtoValidator : BaseDtoValidator<OrderDto>
     {
-
         #region Constructors
 
-        public OrderDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) : base(httpContextAccessor, jsonHelper, requestJsonDictionary)
+        public OrderDtoValidator(IHttpContextAccessor httpContextAccessor, IJsonHelper jsonHelper, Dictionary<string, object> requestJsonDictionary) :
+            base(httpContextAccessor, jsonHelper, requestJsonDictionary)
         {
             SetCustomerIdRule();
             SetOrderItemsRule();
@@ -30,7 +39,8 @@ namespace Nop.Plugin.Api.Validators
             var key = "billing_address";
             if (RequestJsonDictionary.ContainsKey(key))
             {
-                RuleFor(o => o.BillingAddress).SetValidator(new AddressDtoValidator(HttpContextAccessor, JsonHelper, (Dictionary<string, object>)RequestJsonDictionary[key]));
+                RuleFor(o => o.BillingAddress)
+                    .SetValidator(new AddressDtoValidator(HttpContextAccessor, JsonHelper, (Dictionary<string, object>) RequestJsonDictionary[key]));
             }
         }
 
@@ -39,7 +49,8 @@ namespace Nop.Plugin.Api.Validators
             var key = "shipping_address";
             if (RequestJsonDictionary.ContainsKey(key))
             {
-                RuleFor(o => o.ShippingAddress).SetValidator(new AddressDtoValidator(HttpContextAccessor, JsonHelper, (Dictionary<string, object>)RequestJsonDictionary[key]));
+                RuleFor(o => o.ShippingAddress)
+                    .SetValidator(new AddressDtoValidator(HttpContextAccessor, JsonHelper, (Dictionary<string, object>) RequestJsonDictionary[key]));
             }
         }
 
@@ -73,6 +84,5 @@ namespace Nop.Plugin.Api.Validators
         }
 
         #endregion
-
     }
 }

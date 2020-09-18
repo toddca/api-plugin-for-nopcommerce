@@ -1,6 +1,13 @@
-﻿using Nop.Core.Domain.Catalog;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="SpecificationAttributeDtoMapping.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
+using Nop.Core.Domain.Catalog;
 using Nop.Plugin.Api.AutoMapper;
-using Nop.Plugin.Api.DTOs.SpecificationAttributes;
+using Nop.Plugin.Api.DTO.SpecificationAttributes;
 
 namespace Nop.Plugin.Api.MappingExtensions
 {

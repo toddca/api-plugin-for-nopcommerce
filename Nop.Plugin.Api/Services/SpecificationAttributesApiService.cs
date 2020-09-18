@@ -1,9 +1,16 @@
-﻿using Nop.Core.Data;
-using Nop.Core.Domain.Catalog;
-using Nop.Plugin.Api.Constants;
-using Nop.Plugin.Api.DataStructures;
+﻿// // -----------------------------------------------------------------------
+// // <copyright from="2020" to="2020" file="SpecificationAttributesApiService.cs" company="Lindell Management">
+// //    Copyright (c) Lindell Management All Rights Reserved.
+// //    Information Contained Herein is Proprietary and Confidential.
+// // </copyright>
+// // -----------------------------------------------------------------------
+
 using System.Collections.Generic;
 using System.Linq;
+using Nop.Core.Domain.Catalog;
+using Nop.Data;
+using Nop.Plugin.Api.DataStructures;
+using Nop.Plugin.Api.Infrastructure;
 
 namespace Nop.Plugin.Api.Services
 {
@@ -12,13 +19,22 @@ namespace Nop.Plugin.Api.Services
         private readonly IRepository<ProductSpecificationAttribute> _productSpecificationAttributesRepository;
         private readonly IRepository<SpecificationAttribute> _specificationAttributesRepository;
 
-        public SpecificationAttributesApiService(IRepository<ProductSpecificationAttribute> productSpecificationAttributesRepository, IRepository<SpecificationAttribute> specificationAttributesRepository)
+        public SpecificationAttributesApiService(
+            IRepository<ProductSpecificationAttribute> productSpecificationAttributesRepository,
+            IRepository<SpecificationAttribute> specificationAttributesRepository)
         {
             _productSpecificationAttributesRepository = productSpecificationAttributesRepository;
             _specificationAttributesRepository = specificationAttributesRepository;
         }
 
-        public IList<ProductSpecificationAttribute> GetProductSpecificationAttributes(int? productId = null, int? specificationAttributeOptionId = null, bool? allowFiltering = null, bool? showOnProductPage = null, int limit = Configurations.DefaultLimit, int page = Configurations.DefaultPageValue, int sinceId = Configurations.DefaultSinceId)
+        public IList<ProductSpecificationAttribute> GetProductSpecificationAttributes(
+            int? productId = null,
+            int? specificationAttributeOptionId = null,
+            bool? allowFiltering = null,
+            bool? showOnProductPage = null,
+            int limit = Constants.Configurations.DefaultLimit,
+            int page = Constants.Configurations.DefaultPageValue,
+            int sinceId = Constants.Configurations.DefaultSinceId)
         {
             var query = _productSpecificationAttributesRepository.Table;
 
@@ -52,7 +68,10 @@ namespace Nop.Plugin.Api.Services
             return new ApiList<ProductSpecificationAttribute>(query, page - 1, limit);
         }
 
-        public IList<SpecificationAttribute> GetSpecificationAttributes(int limit = Configurations.DefaultLimit, int page = Configurations.DefaultPageValue, int sinceId = Configurations.DefaultSinceId)
+        public IList<SpecificationAttribute> GetSpecificationAttributes(
+            int limit = Constants.Configurations.DefaultLimit,
+            int page = Constants.Configurations.DefaultPageValue,
+            int sinceId = Constants.Configurations.DefaultSinceId)
         {
             var query = _specificationAttributesRepository.Table;
 
